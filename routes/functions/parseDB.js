@@ -29,6 +29,7 @@ function parseDB(fileLocation,keyword,directoryNameForURL) {
     csv 
     .fromStream(stream, {headers : true})
     .on("data", function(data){
+
         let key = data[indexWord].trim() // remove blank spaces around key for uniformity
         
         if(Number.isInteger(key)){}else{
@@ -61,6 +62,9 @@ function parseDB(fileLocation,keyword,directoryNameForURL) {
         countOfDupes++
     }else{
             objOfData[key.toLowerCase()] = trimEachElementInObject(data);
+            headers = Object.keys(objOfData[key.toLowerCase()])
+            objOfData["headers"] = headers;
+
         }       
         
         entries++;

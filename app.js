@@ -1,11 +1,5 @@
 const express = require('express')
-const querystring = require('querystring');
-const parseDB = require('./routes/functions/parseDB');
 const startup = require('./routes/functions/startup');
-// const search = require('./routes/functions/search');
-const filterDBforID = require('./routes/functions/filterDBforID');
-const upload = require('./routes/express routes/upload');
-// const search = require('./Trash/search');
 const paginationFunction = require('./routes/functions/paginationFunction');
 const fs = require('fs')
 const bodyParser = require('body-parser')
@@ -18,19 +12,15 @@ let dataObject = {};
 
 const app = express();
 const port = 3000;
-// app.use('/upload', upload);
-// app.use('/:database/postSearch', search);
-
-// Parse URL-encoded bodies (as sent by HTML forms)
 app.use(express.urlencoded());
-
-// Parse JSON bodies (as sent by API clients)
 app.use(express.json());
 app.use(bodyParser.urlencoded());
 app.use(bodyParser.json());
 
+
+
 app.use(function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // update to match the domain you will make the request from
+    res.header("Access-Control-Allow-Origin", "http://localhost:"+port+""); // update to match the domain you will make the request from
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
@@ -48,7 +38,8 @@ app.post('/:database/postSearchLogger', bodyParser.json(), function (req, res) {
     res.send(req.body)
 })
 
-app // Search function 
+// Search function 
+app 
 .post('/:database/postSearch', bodyParser.json(), function (req, res) {
     const request = req.body
     console.log(request)
@@ -217,7 +208,7 @@ function makeSearchableString(obj){ // returns obj as string without keys
     return stringer
 }
 
-
+//Delete databases, no security
 app.get('/delete/:database/', (req, res) => {
     const reqDatabase = req.param("database");
     let folder = reqDatabase.split("-")[0]
@@ -237,6 +228,7 @@ app.get('/delete/:database/', (req, res) => {
 }
 );
 
+//lookup based on keys, get route
 app.get('/:database/:indexID/', (req, res) => {
     const reqDatabase = req.param("database");
     let indexID = req.param("indexID").toLowerCase();
@@ -254,7 +246,8 @@ app.get('/:database/:indexID/', (req, res) => {
 
 });
 
-
+//alternate commands, not planned yet 
+//probably get a list f the databases, and the headers
 app.get('/info/:database/:command', (req, res) => {
     const command = req.param("command");
     const reqDatabase = req.param("database");
@@ -303,24 +296,26 @@ app.get('/info/:database/:command', (req, res) => {
 app.get('/getAllParams', (req, res) => {
     let availableDatabases = Object.keys(dataObject);
     let returnObj = {}
-    let basicInfo = {databases: availableDatabases, ip: ip.address()+":2020"}
+    let basicInfo = {databases: availableDatabases, ip: ip.address()+":"+port+""}
     returnObj.basicInfo = basicInfo
 
     availableDatabases.forEach(element => {
         let databaseName = element;
         let database = dataObject[element];
-        let databaseKeys = Object.keys(database)
+        let databaseKeys = Object.keys(dataObject[element])
         let databaseSize = databaseKeys.length
-        let databaseHeaders = Object.keys(database[databaseKeys[0]])
+        let databaseHeaders = dataObject[element]["headers"];
         let paginationOptions = paginationFunction.paginationCounter(database);
         let databaseKeyword = element.split("-")[0]
         let databaseFile = element.split("-")[1]
         returnObj[databaseName] = {
-            databaseKeyword:databaseKeyword,databaseFile:databaseFile,databaseSize:databaseSize,databaseHeaders:databaseHeaders,paginationOptions:paginationOptions
+            databaseKeyword:databaseKeyword,databaseFile:databaseFile,databaseSize:databaseSize,databaseHeaders:databaseHeaders
         }
     });
 
     res.send(returnObj)
+
+    function getKey(obj){}
 
 })
 
@@ -339,7 +334,7 @@ app.get('/:database', (req, res) => {
             })
         } else {
             res.status(400).send({
-                "Error Message": "Database not found - try localhost:2020/getDatabaseNames"
+                "Error Message": "Database not found - try localhost:"+port+"/getDatabaseNames"
             })
         }
     }
@@ -348,7 +343,7 @@ app.get('/:database', (req, res) => {
 app.get('/', (req, res) => {
     // res.send(dataObject)
     res.status(400).send({
-        "Error Message": "Database not selected - try localhost:2020/getDatabaseNames"
+        "Error Message": "Database not selected - try localhost:"+port+"/getDatabaseNames"
     });
 });
 
@@ -389,6 +384,8 @@ app
             });
         }
     })
+
+
 })
 
 
