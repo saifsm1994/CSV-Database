@@ -9,9 +9,9 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="http://w2ui.com/src/w2ui-1.4.min.css" />
+  <link rel="stylesheet" type="text/css" href="http://w2ui.com/src/w2ui-1.5.min.css" />
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-  <script type="text/javascript" src="http://w2ui.com/src/w2ui-1.4.min.js"></script>
+  <script type="text/javascript" src="http://w2ui.com/src/w2ui-1.5.min.js"></script>
 </head>
 
 <body id="body">
@@ -209,11 +209,13 @@
     function makeHeaders(arr, keyword) {
       let header = []
       if (Array.isArray(arr)) {
+        //unique entry for retaining the order of the request
         let order = {};
         order["field"] ="Order";
         order["caption"] = "Order";
         order["size"] = '50px';
         order["sortable"] = true;
+        order["clipboardCopy"] = true;
         order["attr"] = 'align=center';
         order["editable"] = { type: 'text' };
         header.push(order)
@@ -229,6 +231,7 @@
           innerHeader["caption"] = element;
           innerHeader["size"] = '150px';
           innerHeader["sortable"] = true;
+          innerHeader["clipboardCopy"] = true;
           innerHeader["attr"] = 'align=center';
           innerHeader["editable"] = { type: 'text' };
           header.push(innerHeader)
@@ -403,22 +406,36 @@
       return table
     }
 
+    function selectRow(){
+      w2ui.grid.selectType = 'row';
+    }
+    function selectCell(){
+      w2ui.grid.selectType = 'cell';
+    }
+
+
     function makeButtons(headers, keyword) {
       // <button class="w2ui-btn" onclick="w2ui.grid.toggleColumn('sdate');">Toggle Last Column</button>
-      let buttonStart = "<button class='w2ui-btn' onclick='w2ui.grid.toggleColumn("
+      let selectRows = "<button class='w2ui-btn' style='margin-left: 0px;margin-right: 0px' onclick='selectRow()'>Select Rows</button>"
+      let selectCells = "<button class='w2ui-btn' style='margin-left: 0px;margin-right: 0px' onclick='selectCell()'>select Cells</button>"
+
+
+      let buttonStart = "<button class='w2ui-btn' style='margin-left: 0px;margin-right: 0px'  onclick='w2ui.grid.toggleColumn("
       let buttonMid = ")'>"
       let buttonEnd = '</button>'
       let button;
 
-      let buttonStart2 = "<button class='w2ui-btn' onclick='w2ui.grid.hideColumn("
+      let buttonStart2 = "<button class='w2ui-btn' style='margin-left: 0px;margin-right: 0px' onclick='w2ui.grid.hideColumn("
       let button2;
 
 
-      let buttonStart3 = "<button class='w2ui-btn' onclick='w2ui.grid.showColumn("
+      let buttonStart3 = "<button class='w2ui-btn' style='margin-left: 0px;margin-right: 0px' onclick='w2ui.grid.showColumn("
       let button3;
 
 
       document.getElementById("buttonsHere").innerHTML = ""
+      document.getElementById("buttonsHere").innerHTML += selectRows
+      document.getElementById("buttonsHere").innerHTML += selectCells
 
       //show All
       let all = headers.map(element => "\"" + element + "\"").join(",")
@@ -447,51 +464,9 @@
       $('#grid').w2grid(obj);
       headers = ["Order", ...headers]
       makeButtons(headers, keyword);
+      selectCell()
+
     }
-
-
-    // $('#grid').w2grid({ // table format
-    //   name: 'grid',
-    //   header: 'Return Table',
-    //   show: {
-    //     toolbar: true,
-    //     footer: true
-    //   },
-    //   columns: [
-    //     { field: 'recid', caption: 'ID', size: '50px', sortable: true, attr: 'align=center' },
-    //     { field: 'lname', caption: 'Last Name', size: '30%', sortable: true, resizable: true },
-    //     { field: 'fname', caption: 'First Name', size: '30%', sortable: true, resizable: true },
-    //     { field: 'email', caption: 'Email', size: '40%', resizable: true },
-    //     { field: 'sdate', caption: 'Start Date', size: '120px', resizable: true },
-    //   ],
-    //   searches: [
-    //     { field: 'recid', caption: 'ID', type: 'text' },
-    //     { field: 'lname', caption: 'Last Name', type: 'text' },
-    //     { field: 'fname', caption: 'First Name', type: 'text' },
-    //     { field: 'email', caption: 'Email', type: 'text' },
-    //   ],
-    //   sortData: [{ field: 'recid', direction: '' }],
-    //   records: [
-    //     { recid: 1, fname: 'John', lname: 'doe', email: 'jdoe@gmail.com', sdate: '4/3/2012' },
-    //     { recid: 3, fname: 'Jin', lname: 'Franson', email: 'jdoe@gmail.com', sdate: '4/3/2012' },
-    //     { recid: 2, fname: 'Stuart', lname: 'Motzart', email: 'jdoe@gmail.com', sdate: '4/3/2012' },
-    //     { recid: 4, fname: 'Susan', lname: 'Ottie', email: 'jdoe@gmail.com', sdate: '4/3/2012' },
-    //     { recid: 5, fname: 'Kelly', lname: 'Silver', email: 'jdoe@gmail.com', sdate: '4/3/2012' },
-    //     { recid: 6, fname: 'Francis', lname: 'Gatos', email: 'jdoe@gmail.com', sdate: '4/3/2012' },
-    //     { recid: 7, fname: 'Mark', lname: 'Welldo', email: 'jdoe@gmail.com', sdate: '4/3/2012' },
-    //     { recid: 8, fname: 'Thomas', lname: 'Bahh', email: 'jdoe@gmail.com', sdate: '4/3/2012' },
-    //     { recid: 9, fname: 'Sergei', lname: 'Rachmaninov', email: 'jdoe@gmail.com', sdate: '4/3/2012' },
-    //     { recid: 20, fname: 'Jill', lname: 'Doe', email: 'jdoe@gmail.com', sdate: '4/3/2012' },
-    //     { recid: 21, fname: 'Frank', lname: 'Motzart', email: 'jdoe@gmail.com', sdate: '4/3/2012' },
-    //     { recid: 22, fname: 'Peter', lname: 'Franson', email: 'jdoe@gmail.com', sdate: '4/3/2012' },
-    //     { recid: 23, fname: 'Andrew', lname: 'Ottie', email: 'jdoe@gmail.com', sdate: '4/3/2012' },
-    //     { recid: 24, fname: 'Manny', lname: 'Silver', email: 'jdoe@gmail.com', sdate: '4/3/2012' },
-    //     { recid: 25, fname: 'Ben', lname: 'Gatos', email: 'jdoe@gmail.com', sdate: '4/3/2012' },
-    //     { recid: 26, fname: 'Doer', lname: 'Welldo', email: 'jdoe@gmail.com', sdate: '4/3/2012' },
-    //     { recid: 27, fname: 'Shashi', lname: 'bahh', email: 'jdoe@gmail.com', sdate: '4/3/2012' },
-    //     { recid: 28, fname: 'Av', lname: 'Rachmaninov', email: 'jdoe@gmail.com', sdate: '4/3/2012' }
-    //   ]
-    // });
 
   </script>
 

@@ -78,6 +78,14 @@ app.get('/:database/:indexID/', (req, res) => {
     if (chosenDatabase && chosenDatabase["headers"]) {
         returnObj.push(chosenDatabase["headers"])
     }
+    if(indexID[0] == "all"){
+        let keys = Object.keys(chosenDatabase)
+        keys.forEach((element,index) => {
+            if(index < 50000){
+            returnObj.push(chosenDatabase[element])
+            }
+        });
+    }else{
     indexID.forEach(element => {
         if (chosenDatabase) {
             if (chosenDatabase[element]) {
@@ -87,7 +95,7 @@ app.get('/:database/:indexID/', (req, res) => {
             }
         }
     });
-
+    }
 
     res.send(returnObj)
 
