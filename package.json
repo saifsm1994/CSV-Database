@@ -1,5 +1,5 @@
 {
-  "name": "csv-database-v2",
+  "name": "csv-database",
   "version": "1.0.0",
   "description": "parses csv into a searchable JavaScript Object",
   "main": "index.js",
@@ -19,6 +19,7 @@
     "ip": "^1.1.5",
     "nodemon": "^2.0.6",
     "path": "^0.12.7",
-    "querystring": "^0.2.0"
+    "querystring": "^0.2.0",
+    "w2ui": "^1.4.3"
   }
 }

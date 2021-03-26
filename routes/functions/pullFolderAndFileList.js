@@ -8,6 +8,9 @@ function pullFolderAndFileList() {
 
 
     return new Promise(function (resolve, reject) {
+
+        
+
         // gets all folders
         const dirs = p => readdirSync(p).filter(f => statSync(join(p, f)).isDirectory())
 
@@ -38,11 +41,19 @@ function pullFolderAndFileList() {
                     }
                 });
 
-                callReadDir.then((message) => {
-                    filesAction(message);
-                    // console.log("pullFolderAndFileList - folderPaths", folderPaths)
+                callReadDir.then((message) => { // use function above
+                    let verifiedFiles = []
+                    if (Array.isArray(message)) {
+                        message.forEach(file => {
+                            if(verifyFiles(file)){
+                                verifiedFiles.push(file)
+                            }
+                        })}
+
+                    filesAction(verifiedFiles); // assemble into array
+
                     setTimeout(() => {
-                        resolve(folderPaths)
+                        resolve(folderPaths) //return to sender
                     }, 200);
                 })
 
@@ -59,6 +70,18 @@ function pullFolderAndFileList() {
                             }
                         });
                     }
+                }
+
+                function verifyFiles(file){
+                    console.log("checking " +directoryName +"/" + file)
+                    var filename = "./public/uploads/"+directoryName+"/"+file;
+                    try{
+                    var res = fs.openSync(filename, 'r')} catch(err){
+                        console.log("failed " + file + err)
+                        return false
+                        }
+                    
+                        return true
                 }
             });
         }

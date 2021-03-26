@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Delete DB</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body id="body">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/Static/">Home</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+    
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/Static/Lookup" style="color:  black; font-weight: 500;;">Lookup </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/Static/Search" style="color:  darkslategray; font-weight: 500;">Search</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/Static/Upload" style="color:green;">Upload DB</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" style="color:red" href="/Static/Delete">Delete DB</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+  <div class="jumbotron text-center" style="padding-top: 5px; padding-bottom: 5px;">
+    <h1>Delete DB</h1>
+    <p>You can delete an uploaded database here.</p> 
+  </div>
+    
+  <div class="container">
+
+    <form>
+    <div class="row">
+      <div class="col-sm-6 col-xs-12 card" style="background-color: whitesmoke; padding-bottom: 12px ">
+        <h3>Select Databases</h3>
+        <div class="form-group">
+            <label for="listOfDatabases">Choose DB to delete</label>
+            <select class="form-control" id="listOfDatabases">
+
+            </select>
+          </div>
+
+
+      </div>
+
+      <div class="col-sm-6 col-xs-12 card">
+          <h3>Confirm Deletion</h3>
+          <button onclick="deleteMe()" class="btn btn-danger">Delete</button>
+      </div>
+
+    </div>
+  </form>
+  </div>
+
+  <script>
+
+  function deleteMe(){
+    chosenDB = document.getElementById("listOfDatabases")
+    alert(chosenDB.value)
+    let attemptedDelete = httpGet("http://localhost:3000/delete/"+chosenDB.value );
+    if(alert(attemptedDelete)){window.location.reload()}
+  }
+  
+  let basicInfo = sendData(httpGet("http://localhost:3000/getAllParams"));
+
+
+
+  function sendData(obj){
+    const listItemStart = '<option value="';
+      const listItemEnd = '</option>';
+
+    obj = JSON.parse(obj)
+    console.log(obj)
+    console.log(obj.basicInfo.databases)
+
+    if(obj != undefined && obj.basicInfo!= undefined & obj.basicInfo.databases!= undefined){
+    let databases = obj.basicInfo.databases;
+    databases.forEach(element => {
+      let count = obj[element].databaseSize;
+      let item = listItemStart + element + '">' + "<strong>Keyword</strong>: " + element.split("-")[0] + "  |  <strong>File:</strong> " + element.split("-")[1] + "  | <strong>Unique Indexes:</strong> "+ count + listItemEnd;
+      document.getElementById("listOfDatabases").innerHTML += item
+      console.log(item)
+    });
+
+  }else{
+    console.log(obj)
+    console.log(obj.basicInfo)
+    console.log(obj.basicInfo.databases)
+
+  }
+  }
+
+
+  
+  function httpGet(theUrl)
+{
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
+    xmlHttp.send( null );
+    return xmlHttp.responseText;
+}
+  </script>
+  
+</body>
+</html>

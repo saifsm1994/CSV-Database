@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>CSV Database</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/Static/">Home</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/Static/Lookup" style="color:  black; font-weight: 500;;">Lookup </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/Static/Search" style="color:  darkslategray; font-weight: 500;">Search</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/Static/Upload" style="color:green;">Upload DB</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" style="color:red" href="/Static/Delete">Delete DB</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="jumbotron text-center" style="padding-top: 5px; padding-bottom: 5px;">
+    <h1>CSV Database</h1>
+    <p>Upload a CSV file below to turn it into a searchable website.
+      <br / > Great for when your file is too big for typical spreadsheet tools.</p>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-4 col-xs-12 card" style="background-color: whitesmoke; padding-bottom: 12px ">
+        <h3>Upload New Databases</h3>
+        <p>Choose a keyword and upload a csv file.</p>
+        <p> Please ensure the file is free of error or any columns without headers</p>
+        <a type="button" class="btn btn-primary" href="/Static/Upload" role="button">Upload</a>
+      </div>
+
+      <div class="col-sm-4 col-xs-12 card">
+        <h3>Search an existing Database</h3>
+        <p>Search within an existing database based on values</p>
+        <a type="button" class="btn btn-primary" href="/Static/Search" role="button">Search</a>
+      </div>
+
+      <div class="col-sm-4 col-xs-12 card" style="background-color: whitesmoke;">
+        <h3>Lookup by key</h3>
+        <p>Lookup values in an existing database by Key terms</p>
+        <br>
+        <a type="button" class="btn btn-primary" href="/Static/Lookup" role="button">Lookup</a>
+      </div>
+
+      <div class="offset-sm-4 col-sm-4 col-xs-12 card"
+        style="padding-bottom: 12px; margin-top: 10px; background-color: whitesmoke;">
+        <h3 style="color:red; margin-top: 5%;">Delete existing database</h3>
+        <p>Delete a current database</p>
+        <Br>
+        <a type="button" class="btn btn-danger" href="/Static/Delete" role="button">Delete</a>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>

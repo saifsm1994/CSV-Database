@@ -30,58 +30,6 @@ function mustIncludeOrExclude(terms,obj,includeOrExclude){
 
 }
 
-//need to turn this into a promise
-//search function, looped for each additional input, Inclusive (appends results)        
-// function singleSearchPromise(orSearchCat,orSearchCombinations,searchType,returnObj,chosenDatabaseKeys,chosenDatabase){
-//     // formats: string, array, string, obj, obj
-//     return new Promise(function(resolve, reject) {
-    
-//     let cat = orSearchCat;
-//     let term = orSearchCombinations
-//     let type = searchType;
-//     // let returnObj = returnObj;
-//     // let chosenDatabaseKeys = chosenDatabaseKeys;
-
-
-
-//     if(type == "exact"){
-//         term.forEach(searchTerm => {
-//             // console.log("searchTerm",searchTerm)
-//             chosenDatabaseKeys.forEach(indexId => {
-//                 let valueEntry = chosenDatabase[indexId];
-//                 let value = valueEntry[cat];
-//                 value = value.replace("/(\|\|\s\add\.\svalue\s\d\:)+/gim","|").split("|")
-//                 value.forEach(valueElement => {
-//                     if(valueElement.trim().toLowerCase() == searchTerm.trim().toLowerCase()){
-//                         returnObj[indexId] = valueEntry
-//                     }else{
-//                         // console.log(valueElement + "!=" + searchTerm)
-//                     }
-//                 });
-//             });
-//         });
-//      }
-
-//      if(type == "loose"){
-//         term.forEach(searchTerm => {
-//             // console.log("searchTerm looseSearch",searchTerm)
-//             chosenDatabaseKeys.forEach(indexId => {
-//                 let valueEntry = chosenDatabase[indexId];
-//                 let value = valueEntry[cat];
-//             if(value.trim().toLowerCase().includes(searchTerm.trim().toLowerCase()) && searchTerm.length > 1  || value.length >= 1 && searchTerm.trim().toLowerCase().includes(value.trim().toLowerCase() )){
-//                 returnObj[indexId] = valueEntry
-//                 // console.log("adding to Return:\n " + value.trim().toLowerCase() +"\n == \n" + searchTerm.trim().toLowerCase())
-//             }
-//             });
-//         });
-//      }
-
-//      resolve(returnObj)
-
-//     })
-
-// }
-
 function singleSearch(orSearchCat,orSearchCombinations,searchType,returnObj,chosenDatabaseKeys,chosenDatabase){
     // formats: string, array, string, obj, obj
 
@@ -104,7 +52,6 @@ function singleSearch(orSearchCat,orSearchCombinations,searchType,returnObj,chos
                     if(valueElement.trim().toLowerCase() == searchTerm.trim().toLowerCase()){
                         returnObj[indexId] = valueEntry
                     }else{
-                        // console.log(valueElement + "!=" + searchTerm)
                     }
                 });
             });
