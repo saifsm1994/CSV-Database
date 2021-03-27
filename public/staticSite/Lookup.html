@@ -110,7 +110,7 @@
     }
 
 
-    let basicInfo = sendData(httpGet("http://localhost:3000/getAllParams"));
+    let basicInfo = sendData(httpGet("/getAllParams"));
     function sendData(obj) { // sends database selection choices
       const listItemStart = '<option class="list-group-item value="';
       const listItemEnd = '</option>';
@@ -173,7 +173,7 @@
       });
 
       let urlEnd = databaseSelectValue + "/" + joined
-      let fullURL = "http://localhost:3000/" + urlEnd
+      let fullURL = "/" + urlEnd
 
       console.log(fullURL)
 
@@ -212,7 +212,7 @@
         //unique entry for retaining the order of the request
         let order = {};
         order["field"] ="Order";
-        order["caption"] = "Order";
+        order["text"] = "Order";
         order["size"] = '50px';
         order["sortable"] = true;
         order["clipboardCopy"] = true;
@@ -221,14 +221,14 @@
         header.push(order)
 
         arr.forEach(element => {
-          // { field: 'recid', caption: 'ID', size: '50px', sortable: true, attr: 'align=center' }
+          // { field: 'recid', text: 'ID', size: '50px', sortable: true, attr: 'align=center' }
           let innerHeader = {}
           if (element == keyword) {
             innerHeader["field"] = "recid";
           } else {
             innerHeader["field"] = element;
           }
-          innerHeader["caption"] = element;
+          innerHeader["text"] = element;
           innerHeader["size"] = '150px';
           innerHeader["sortable"] = true;
           innerHeader["clipboardCopy"] = true;
@@ -247,14 +247,14 @@
       let searches = []
       if (Array.isArray(arr)) {
         arr.forEach(element => {
-          //  { field: 'recid', caption: 'ID', type: 'text' },
+          //  { field: 'recid', text: 'ID', type: 'text' },
           let innerSearch = {}
           if (element == keyword) {
             innerSearch["field"] = "recid";
           } else {
             innerSearch["field"] = element;
           }
-          innerSearch["caption"] = element;
+          innerSearch["text"] = element;
           innerSearch["type"] = 'text';
           searches.push(innerSearch)
         });
