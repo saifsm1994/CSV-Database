@@ -70,11 +70,11 @@
   function deleteMe(){
     chosenDB = document.getElementById("listOfDatabases")
     alert(chosenDB.value)
-    let attemptedDelete = httpGet("http://localhost:3000/delete/"+chosenDB.value );
+    let attemptedDelete = httpGet("/delete/"+chosenDB.value );
     if(alert(attemptedDelete)){window.location.reload()}
   }
   
-  let basicInfo = sendData(httpGet("http://localhost:3000/getAllParams"));
+  let basicInfo = sendData(httpGet("/getAllParams"));
 
 
 

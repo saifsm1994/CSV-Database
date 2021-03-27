@@ -16,30 +16,30 @@
 
 <body id="body">
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="/Static/">Home</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-    
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="/Static/Lookup" style="color:  black; font-weight: 500;;">Lookup </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/Static/Search" style="color:  darkslategray; font-weight: 500;">Search</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/Static/Upload" style="color:green;">Upload DB</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" style="color:red" href="/Static/Delete">Delete DB</a>
-            </li>
-          </ul>
-        </div>
-      </nav>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/Static/">Home</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/Static/Lookup" style="color:  black; font-weight: 500;;">Lookup </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/Static/Search" style="color:  darkslategray; font-weight: 500;">Search</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/Static/Upload" style="color:green;">Upload DB</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" style="color:red" href="/Static/Delete">Delete DB</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
 
   <div class="jumbotron text-center" style="padding-top: 5px; padding-bottom: 5px;">
     <h1>Search Page</h1>
@@ -47,7 +47,7 @@
   </div>
 
   <div class="container" style=" margin-bottom: 100px;">
-      <div class="row">
+    <div class="row">
 
       <div class="col-sm-12 col-xs-12 card"
         style="background-color: transparent; border: transparent; padding-bottom: 12px ">
@@ -140,29 +140,29 @@
                   <label class="form-check-label" for="mergeDuplicatesCheckbox">Merge Duplicates</label>
                 </div>
                 <div class="col-md-3 col-sm-3 col-xs-3">
-                    <input type="checkbox" class="form-check-input" id="searchTypeCheckbox" checked>
-                    <label class="form-check-label" for="searchTypeCheckbox">Exact Search</label>
-                  </div>
-                  <div class="col-md-3 col-sm-3 col-xs-3">
-                      <input type="checkbox" class="form-check-input" id="caseSensitive" checked>
-                      <label class="form-check-label" for="caseSensitive">Case Insensitive</label>
-                    </div>
+                  <input type="checkbox" class="form-check-input" id="searchTypeCheckbox" checked>
+                  <label class="form-check-label" for="searchTypeCheckbox">Exact Search</label>
+                </div>
                 <div class="col-md-3 col-sm-3 col-xs-3">
-                    Entries per page
-                    <select class="form-control-sm" id="pagination">
-                        <option>25</option>
-                        <option>50</option>
-                        <option>100</option>
-                        <option selected>500</option>
-                        <option>1000</option>
-                        <option>3000</option>
-                      </select>
-                  </div>
+                  <input type="checkbox" class="form-check-input" id="caseSensitive" checked>
+                  <label class="form-check-label" for="caseSensitive">Case Insensitive</label>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-3">
+                  Entries per page
+                  <select class="form-control-sm" id="pagination">
+                    <option>25</option>
+                    <option>50</option>
+                    <option>100</option>
+                    <option selected>500</option>
+                    <option>1000</option>
+                    <option>3000</option>
+                  </select>
+                </div>
               </div>
             </div>
 
 
-            
+
 
 
             <button class="btn btn-primary" type="button" onclick="getSearch(1)">Search</button>
@@ -172,21 +172,23 @@
       </div>
 
       <div class=" offset-xl-8 offset-md-8 offset-sm-8 col-xl-4 col-md-4 col-sm-4 col-xs-12 " style="margin-top: 1%">
-          <!-- <h5>Pages</h3> -->
-          <!-- <div id="pageButtonsHere" class="row"></div> -->
-          <nav aria-label="Page navigation example">
-              <ul class="pagination" id="pageButtonsHere">
+        <!-- <h5>Pages</h3> -->
+        <!-- <div id="pageButtonsHere" class="row"></div> -->
+        <nav aria-label="Page navigation example">
+          <ul class="pagination" id="pageButtonsHere">
 
-              </ul>
-            </nav>
-        </div>
+          </ul>
+        </nav>
+      </div>
 
       <div class="col-xl-12 col-md-12 col-sm-12 col-xs-12 card" style="margin-top: 1%">
-          <h3>Results</h3>
-          <div id="buttonsHere" class="row"></div>
-          <br>
-          <div id="grid" style="min-height: 450px; "></div>
-        </div>
+        <h3>Results</h3>
+        <div id="buttonsHere" class="row"></div>
+        <div id="buttonsHere1" class="row"></div>
+        <div id="buttonsHere2" class="row"></div>
+        <br>
+        <div id="grid" style="min-height: 450px; "></div>
+      </div>
 
     </div>
   </div>
@@ -234,7 +236,7 @@
     }
 
 
-    let basicInfoUnprocessed = httpGet("http://localhost:3000/getAllParams");
+    let basicInfoUnprocessed = httpGet("/getAllParams");
     let basicInfo = sendData(basicInfoUnprocessed);
 
     function sendData(obj) { // sends database selection choices
@@ -272,12 +274,12 @@
       return xmlHttp.responseText;
     }
 
-    function httpPost(theUrl, value,function1) { // parses get request of input theUrl
+    function httpPost(theUrl, value, function1) { // parses get request of input theUrl
       var xhr = new XMLHttpRequest();
       xhr.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            function1(this.responseText)
-            return true;
+          function1(this.responseText)
+          return true;
         }
       };
       xhr.open("POST", theUrl, true);
@@ -316,7 +318,7 @@
       let pagination = document.getElementById("pagination").value;
 
 
-      
+
       orSearchCat.push(document.getElementById("categorySelect1").value)
       orSearchCat.push(document.getElementById("categorySelect2").value)
       orSearchCat.push(document.getElementById("categorySelect3").value)
@@ -340,19 +342,19 @@
       requestObj["mustExclude"] = mustExclude
       requestObj["caseSensitive"] = caseSensitive
 
-      
+
 
       // console.log("requestObj", requestObj)
 
 
-      let returnGet = httpPost("http://localhost:3000/postSearch", requestObj,waitForPost)
+      let returnGet = httpPost("/postSearch", requestObj, waitForPost)
 
       function waitForPost(returnGet) {
         returnGet = JSON.parse(returnGet);
         let headerKeys = returnGet["internalMessages"]["headers"]; // object headers
         let len = returnGet["internalMessages"]["len"]; // entries in the return object for pagination
-        let pageCount = Math.ceil(len/pagination);
-        console.log("len",len,pageCount,"pages")//getSearch(2)
+        let pageCount = Math.ceil(len / pagination);
+        console.log("len", len, pageCount, "pages")//getSearch(2)
         paginationButtons(pageCount)
 
         let returnedEntries = Object.keys(returnGet) // list of all entries
@@ -376,20 +378,20 @@
           makeGrid(table, headerKeys, keyword);
         }
 
-        function paginationButtons(pageCount){
-        document.getElementById("pageButtonsHere").innerHTML = ""
-        let buttonStart = "<li class='page-item'><a class='page-link' href='#'' onclick='"
-        let buttonMid = "'>"
-        let buttonEnd = "</a></li>"
-       
+        function paginationButtons(pageCount) {
+          document.getElementById("pageButtonsHere").innerHTML = ""
+          let buttonStart = "<li class='page-item'><a class='page-link' href='#'' onclick='"
+          let buttonMid = "'>"
+          let buttonEnd = "</a></li>"
 
-        for(let i = 1; i<= pageCount; i++){
-          let button;
-          
-          button = buttonStart + "getSearch(\"" + i + '\")' + buttonMid + i + buttonEnd
-          document.getElementById("pageButtonsHere").innerHTML += button
+
+          for (let i = 1; i <= pageCount; i++) {
+            let button;
+
+            button = buttonStart + "getSearch(\"" + i + '\")' + buttonMid + i + buttonEnd
+            document.getElementById("pageButtonsHere").innerHTML += button
+          }
         }
-       } 
 
       }
 
@@ -405,7 +407,7 @@
           } else {
             innerHeader["field"] = element;
           }
-          innerHeader["caption"] = element;
+          innerHeader["text"] = element;
           innerHeader["size"] = '150px';
           innerHeader["sortable"] = true;
           innerHeader["clipboardCopy"] = true;
@@ -424,14 +426,14 @@
       let searches = []
       if (Array.isArray(arr)) {
         arr.forEach(element => {
-          //  { field: 'recid', caption: 'ID', type: 'text' },
+          //  { field: 'recid', text: 'ID', type: 'text' },
           let innerSearch = {}
           if (element == keyword) {
             innerSearch["field"] = "recid";
           } else {
             innerSearch["field"] = element;
           }
-          innerSearch["caption"] = element;
+          innerSearch["text"] = element;
           innerSearch["type"] = 'text';
           searches.push(innerSearch)
         });
@@ -576,16 +578,16 @@
       return table
     }
 
-    function selectRow(){
+    function selectRow() {
       w2ui.grid.selectType = 'row';
     }
-    function selectCell(){
+    function selectCell() {
       w2ui.grid.selectType = 'cell';
     }
 
     function makeButtons(headers, keyword) {
       // <button class="w2ui-btn" onclick="w2ui.grid.toggleColumn('sdate');">Toggle Last Column</button>
-      let selectRows = "<button class='w2ui-btn' style='margin-left: 0px;margin-right: 0px' onclick='selectRow()'>Select Rows</button>"
+      let selectRows = "<p><strong>Selection Type: </strong></p><button class='w2ui-btn' style='margin-left: 2px;margin-right: 0px' onclick='selectRow()'>Select Rows</button>"
       let selectCells = "<button class='w2ui-btn' style='margin-left: 0px;margin-right: 0px' onclick='selectCell()'>select Cells</button>"
 
 
@@ -598,22 +600,24 @@
       let button2;
 
 
-      let buttonStart3 = "<button class='w2ui-btn' style='margin-left: 0px;margin-right: 0px' onclick='w2ui.grid.showColumn("
+      let buttonStart3 = "<p><strong>Show Hide</strong></p><button class='w2ui-btn' style='margin-left: 2px;margin-right: 0px' onclick='w2ui.grid.showColumn("
       let button3;
 
 
 
       document.getElementById("buttonsHere").innerHTML = ""
+      document.getElementById("buttonsHere1").innerHTML = ""
+      document.getElementById("buttonsHere2").innerHTML = ""
 
       document.getElementById("buttonsHere").innerHTML += selectRows + selectCells
       //show All
       let all = headers.map(element => "\"" + element + "\"").join(",")
       button3 = buttonStart3 + "\"recid\"," + all + buttonMid + "Show All" + buttonEnd;
-      document.getElementById("buttonsHere").innerHTML += button3
+      document.getElementById("buttonsHere1").innerHTML += button3
 
       //Hide All
       button2 = buttonStart2 + "\"recid\"," + all + buttonMid + "Hide All" + buttonEnd;
-      document.getElementById("buttonsHere").innerHTML += button2
+      document.getElementById("buttonsHere1").innerHTML += button2
 
 
       headers.forEach(element => {
@@ -622,7 +626,7 @@
         } else {
           button = buttonStart + "\"" + element + "\"" + buttonMid + element + buttonEnd;
         }
-        document.getElementById("buttonsHere").innerHTML += button
+        document.getElementById("buttonsHere2").innerHTML += button
       });
 
     }
