@@ -157,11 +157,20 @@ router.post('/', bodyParser.json(), function (req, res) {
 
   if (includeArrlen && includeArr && includeArrlen > 0 && includeArr[0] != "") {
     includeArr.forEach((mustIncludeString, index) => {
-      let includeReg = new RegExp(mustIncludeString, 'gmi')
-      if (index == 0) {
-        returnObjTemp2 = includeSearch(returnObjKeys1, returnObjTemp, includeReg)
-      }else{
-        returnObjTemp2 = includeSearch(Object.keys(returnObjTemp2), returnObjTemp2, includeReg)
+      try {
+        let includeReg = new RegExp(mustIncludeString, 'gmi')
+        if (index == 0) {
+          returnObjTemp2 = includeSearch(returnObjKeys1, returnObjTemp, includeReg)
+        } else {
+          returnObjTemp2 = includeSearch(Object.keys(returnObjTemp2), returnObjTemp2, includeReg)
+        }
+      } catch{
+        console.log("regex search failed in determining must include values, defaulting to indexOf search for keyword: " + mustIncludeString)
+        if (index == 0) {
+          returnObjTemp2 = includeSearch2(returnObjKeys1, returnObjTemp, mustIncludeString)
+        } else {
+          returnObjTemp2 = includeSearch2(Object.keys(returnObjTemp2), returnObjTemp2, mustIncludeString)
+        }
       }
     });
   } else {
@@ -171,16 +180,21 @@ router.post('/', bodyParser.json(), function (req, res) {
 
   if (excludeArrlen > 0 && excludeArr[0] != "") {
     excludeArr.forEach(mustExcludeString => {
+      try {
         let excludeReg = new RegExp(mustExcludeString, 'gmi')
         returnObjTemp2 = excludeSearch(Object.keys(returnObjTemp2), returnObjTemp2, excludeReg)
-        });
-        returnObj = returnObjTemp2;
-      } else {
-      returnObj = returnObjTemp2;
-    }
+      } catch{
+        console.log("regex search failed in determining must exclude values, defaulting to indexOf search for keyword: " + mustIncludeString)
+        returnObjTemp2 = excludeSearch2(Object.keys(returnObjTemp2), returnObjTemp2, excludeReg)
+      }
+    });
+    returnObj = returnObjTemp2;
+  } else {
+    returnObj = returnObjTemp2;
+  }
 
-  
-  function includeSearch(arrayOfKeys,ObjOfIncludedValues, regex) { //adds regex matches to obj
+  //if invalid regex call this
+  function includeSearch(arrayOfKeys, ObjOfIncludedValues, regex) { //adds regex matches to obj
     let retunObj = {}
     // console.log("arrayOfKeys",arrayOfKeys)
     arrayOfKeys.forEach(includedKey => {
@@ -193,11 +207,34 @@ router.post('/', bodyParser.json(), function (req, res) {
     return retunObj
   }
 
+  function includeSearch2(arrayOfKeys, ObjOfIncludedValues, searchString) { //adds regex matches to obj
+    let retunObj = {}
+    // console.log("arrayOfKeys",arrayOfKeys)
+    arrayOfKeys.forEach(includedKey => {
+      let stringVal = makeSearchableString(ObjOfIncludedValues[includedKey]);
+      if (stringVal.indexOf(searchString) != -1) {
+        retunObj[includedKey] = ObjOfIncludedValues[includedKey];
+      } else {
+      }
+    })
+    return retunObj
+  }
 
-  function excludeSearch(arrayOfKeys,ObjOfIncludedValues, regex) { // deletes entries in regex from obj
+
+  function excludeSearch(arrayOfKeys, ObjOfIncludedValues, regex) { // deletes entries in regex from obj
     arrayOfKeys.forEach(includedKey => {
       let stringVal = makeSearchableString(ObjOfIncludedValues[includedKey]);
       if (stringVal.match(regex)) {
+        delete ObjOfIncludedValues[includedKey];
+      } else {
+      }
+    })
+    return ObjOfIncludedValues
+  }
+  function excludeSearch2(arrayOfKeys, ObjOfIncludedValues, searchString) { // deletes entries in regex from obj
+    arrayOfKeys.forEach(includedKey => {
+      let stringVal = makeSearchableString(ObjOfIncludedValues[includedKey]);
+      if (stringVal.indexOf(searchString) != -1) {
         delete ObjOfIncludedValues[includedKey];
       } else {
       }
