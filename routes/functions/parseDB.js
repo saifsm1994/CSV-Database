@@ -29,6 +29,7 @@ function parseDB(fileLocation, keyword, directoryNameForURL) {
 
         function parseFile() {
             return new Promise(function (resolve, reject) {
+                let noKeyCount = 0;
                 csv
                 .fromStream(stream, { headers: true })
                 .on('error', function(error){
@@ -41,9 +42,10 @@ function parseDB(fileLocation, keyword, directoryNameForURL) {
 
                     let key = data[indexWord].trim() // remove blank spaces around key for uniformity
                     if(key == ""){
-                        console.log(key,"no key found for a row, please ensure all rows have a value in the chosen identifier/index term field")
+                        // console.log(key,"no key found for a row, please ensure all rows have a value in the chosen identifier/index term field")
                         key = "no key found"
                         data[indexWord] = key
+                        noKeyCount++
                     }
 
                     if (Number.isInteger(key)) { } else {
@@ -87,6 +89,7 @@ function parseDB(fileLocation, keyword, directoryNameForURL) {
                 })
                 .on("end", function () {
                     console.log("parseDB - entries parsed for", fileLocation, " + ", indexWord, "is", entries);
+                    if(noKeyCount > 0){console.log("no key found for "  + noKeyCount + " rows, please ensure all rows have a value in the chosen identifier/index term field")}
                     returnObj = objOfData;
                     resolve(returnObj)
                 });

@@ -10,6 +10,9 @@ let dataObject = {};
 
 const app = express();
 const port = 3000;
+var ip = require('ip')
+let ipAddress = ip.address()
+
 app.set('port', port);
 
 app.use(express.urlencoded());
@@ -28,6 +31,11 @@ app.use('/static', express.static('public/staticSite', {
     extensions: ['html', 'htm'],
 }));
 
+app.listen(port, () => {
+    console.log(`Example app listening on port ${ipAddress + port}!`)
+}); 
+
+app.listen(3000, ipAddress)
 
 app.use(function (req, res, next) {
 
@@ -212,6 +220,3 @@ function refreshDO(time) {
     }, time);
 }
 
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}!`)
-}); 
