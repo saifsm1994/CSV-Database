@@ -9,16 +9,20 @@ let dataObject = {};
 
 
 const app = express();
-const port = 3000;
-var ip = require('ip')
-let ipAddress = ip.address()
 
-app.set('port', port);
+// use port 3000 unless there exists a preconfigured port
+let port = process.env.PORT || 3000;
 
 app.use(express.urlencoded());
 app.use(express.json());
 app.use(bodyParser.urlencoded());
 app.use(bodyParser.json());
+
+console.log("trying port " + port)
+app.listen(port, () => {
+    console.log("App listening on port " + port)
+});
+
 
 const getAllParamsroutes = require('./routes/express routes/getAllParams');
 const searchroutes = require('./routes/express routes/search');
@@ -30,12 +34,6 @@ app.use('/postSearch', searchroutes);
 app.use('/static', express.static('public/staticSite', {
     extensions: ['html', 'htm'],
 }));
-
-app.listen(port, () => {
-    console.log(`Example app listening on port ${ipAddress + port}!`)
-}); 
-
-// app.listen(3000, ipAddress)
 
 app.use(function (req, res, next) {
 
