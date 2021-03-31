@@ -6,6 +6,8 @@ Excel often has issues with larger spreadsheets which are >15,000+ lines long an
 
 ## Installation
 
+### Complete Beginners Installation Guide
+
 I will be assuming users have no knowledge of web development applications like nodejs. I have not tested this application on Linux or MacOS but I imagine installation will be relatively similar
 
 Installation is relatively simple, but we need a few softwares to be installed. These are 
@@ -38,8 +40,38 @@ yarn install
 yarn start
 ```
 
-* Closing the window will cause the application to stop, starting it again can be done by opening the terminal  in the given folder again and using the above "yarn start" command
+* Closing the terminal window will cause the application to stop, starting it again can be done by opening the terminal  in the given folder again and using the above "yarn start" command
 
+Server will be available at [http://localhost:3000/](http://localhost:3000/)
+
+
+### Regular Installation Guide
+
+Download or Clone entire repository, cd into repo and run
+
+```bash
+yarn install
+```
+
+OR 
+
+```bash
+npm install
+```
+
+Service can be started with 
+
+```bash
+npm start
+```
+
+OR 
+
+```bash
+yarn start
+```
+
+Server will be available at [http://localhost:3000/](http://localhost:3000/)
 
 
 ## Usage:
