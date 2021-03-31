@@ -14,33 +14,35 @@
   <link rel="stylesheet" type="text/css" href="http://w2ui.com/src/w2ui-1.5.min.css" />
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
   <script type="text/javascript" src="http://w2ui.com/src/w2ui-1.5.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 </head>
 
 <body id="body">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="/Static/">Home</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-    
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="/Static/Lookup" style="color:  black; font-weight: 500;;">Lookup </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/Static/Search" style="color:  darkslategray; font-weight: 500;">Search</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/Static/Upload" style="color:green;">Upload DB</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" style="color:red" href="/Static/Delete">Delete DB</a>
-            </li>
-          </ul>
-        </div>
-      </nav>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/Static/">Home</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/Static/Lookup" style="color:  black; font-weight: 500;;">Lookup </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/Static/Search" style="color:  darkslategray; font-weight: 500;">Search</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/Static/Upload" style="color:green;">Upload DB</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" style="color:red" href="/Static/Delete">Delete DB</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
 
   <div class="jumbotron text-center" style="padding-top: 5px; padding-bottom: 5px;">
     <h1>Index Lookup Page</h1>
@@ -59,7 +61,12 @@
               <select class="form-control" id="databaseSelect" onclick="saveChoice()">
               </select>
             </div>
-            <h3>Comma Seperated Search Terms</h3>
+            <h3>Comma Seperated Search Terms
+              <i class="fa fa-info-circle" style="color: black;" title="1. Use 'all' for all entries in a database - warning this can be slow for extremely large databases 
+                2. Entries without a keyword value will be assigned the value 'No Key Found' "></i>
+            </h3>
+
+
             <input class="form-control form-control-sm" type="text" placeholder="Index terms here" id="csvSearch">
             <!-- </div> -->
 
@@ -86,7 +93,7 @@
         <h3>Results</h3>
         <div id="buttonsHere" class="row"></div>
         <div id="buttonsHere1" class="row"></div>
-        <div id="buttonsHere2" class="row"></div>        <br>
+        <div id="buttonsHere2" class="row"></div> <br>
         <div id="grid" style="min-height: 450px;"></div>
       </div>
 
@@ -167,7 +174,7 @@
       });
       colSearchValue.forEach((element, index) => {
         if (element != null && element != undefined && element != "" && element.indexOf(",") == -1) {
-          if (index == 0) {
+          if (index == 0 && joined.length < 1) {
             joined = element
           } else {
             joined = joined + "," + element;
@@ -181,30 +188,60 @@
       console.log(fullURL)
 
       let returnGet = httpGet(fullURL);
-      returnGet = JSON.parse(returnGet);
-      let returnedEntries = Object.keys(returnGet)
+      try {
+        console.log(returnGet)
+        returnGet = JSON.parse(returnGet);
+        let returnedEntries = Object.keys(returnGet)
 
-      let returnRowsParsed = [];
-      // console.log(returnGet["0"]) // this is the column key in array form
+        let returnRowsParsed = [];
+        // console.log(returnGet["0"]) // this is the column key in array form
 
-      returnedEntries.forEach(element => {
-        if (element != "0") {
-          returnRowsParsed.push(returnGet[element]) // full return objects are here
+        returnedEntries.forEach(element => {
+          if (element != "0") {
+            returnRowsParsed.push(returnGet[element]) // full return objects are here
+          }
+        });
+
+        let headers = makeHeaders(returnGet["0"], keyword);
+        let searches = makeSearches(returnGet["0"], keyword);
+        let sorts = makeSorts(returnGet["0"], keyword);
+        let records = makeRecords(returnGet["0"], returnRowsParsed, keyword)
+        if (!headers || !searches || !sorts || !records) { alert("process failed") }
+
+
+        let table = makeTable(headers, searches, sorts, records)
+
+        if (table) {
+          makeGrid(table, returnGet["0"], keyword);
         }
-      });
+      } catch{
+        //if no results returned - create message in table format
+        console.log("failed")
+        // document.getElementById('grid').innerHTML = "Failed to find any results - " + returnGet
+        returnGet = returnGet.replace("Available keys in this database include:","").split(",")
+        let keyword = "Results";
+        let message = "Message";
+        let arrayOfKeywords = [keyword,message];
+        let returnRowsParsed = [];
+        let internalObject = {"Results": "", "Message":"No Values matching given keys found"}
+        returnRowsParsed.push(internalObject) // full return objects are here
 
-      let headers = makeHeaders(returnGet["0"], keyword);
-      let searches = makeSearches(returnGet["0"], keyword);
-      let sorts = makeSorts(returnGet["0"], keyword);
-      let records = makeRecords(returnGet["0"], returnRowsParsed, keyword)
-      if (!headers || !searches || !sorts || !records) { alert("process failed") }
+        let headers = makeHeaders(arrayOfKeywords, keyword);
+        let searches = makeSearches(arrayOfKeywords, keyword);
+        let sorts = makeSorts(arrayOfKeywords, keyword);
+        let records = makeRecords(arrayOfKeywords, returnRowsParsed, keyword)
+        if (!headers || !searches || !sorts || !records) { alert("process failed") }
 
 
-      let table = makeTable(headers, searches, sorts, records)
+        let table = makeTable(headers, searches, sorts, records)
 
-      if (table) {
-        makeGrid(table, returnGet["0"], keyword);
+        if (table) {
+          makeGrid(table, arrayOfKeywords, keyword);
+        }
+
+
       }
+
 
 
     }
@@ -214,7 +251,7 @@
       if (Array.isArray(arr)) {
         //unique entry for retaining the order of the request
         let order = {};
-        order["field"] ="recid";
+        order["field"] = "recid";
         order["text"] = "Order";
         order["size"] = '50px';
         order["sortable"] = true;
@@ -227,9 +264,9 @@
           // { field: 'recid', text: 'ID', size: '50px', sortable: true, attr: 'align=center' }
           let innerHeader = {}
           // if (element == keyword) {
-            // innerHeader["field"] = "recid";
+          // innerHeader["field"] = "recid";
           // } else {
-            innerHeader["field"] = element;
+          innerHeader["field"] = element;
           // }
           innerHeader["text"] = element;
           innerHeader["size"] = '150px';
@@ -253,9 +290,9 @@
           //  { field: 'recid', text: 'ID', type: 'text' },
           let innerSearch = {}
           // if (element == keyword) {
-            // innerSearch["field"] = "recid";
+          // innerSearch["field"] = "recid";
           // } else {
-            innerSearch["field"] = element;
+          innerSearch["field"] = element;
           // }
           innerSearch["text"] = element;
           innerSearch["type"] = 'text';
@@ -271,7 +308,7 @@
       let sorts = []
       if (Array.isArray(arr)) {
         let order = {};
-        order["field"] ="recid";
+        order["field"] = "recid";
         order["direction"] = '';
         sorts.push(order)
 
@@ -279,9 +316,9 @@
           //  { field: 'recid', direction: '' },
           let innerSort = {}
           // if (element == keyword) {
-            // innerSort["field"] = "recid";
+          // innerSort["field"] = "recid";
           // } else {
-            innerSort["field"] = element;
+          innerSort["field"] = element;
           // }
           innerSort["direction"] = '';
           sorts.push(innerSort)
@@ -369,15 +406,15 @@
           headers.forEach(header => {
             if (row[header]) {
               // if (header == keyword) {
-                // innerRecord["recid"] = row[header];
+              // innerRecord["recid"] = row[header];
               // } else {
-                innerRecord[header] = row[header];
+              innerRecord[header] = row[header];
               // }
             } else {
               // if (header == keyword) {
-                // innerRecord["recid"] = "Not Found";
+              // innerRecord["recid"] = "Not Found";
               // } else {
-                innerRecord[header] = "Not Found";
+              innerRecord[header] = "Not Found";
               // }
             }
           });
@@ -409,17 +446,17 @@
       return table
     }
 
-    function selectRow(){
+    function selectRow() {
       w2ui.grid.selectType = 'row';
     }
-    function selectCell(){
+    function selectCell() {
       w2ui.grid.selectType = 'cell';
     }
 
 
     function makeButtons(headers, keyword) {
       // <button class="w2ui-btn" onclick="w2ui.grid.toggleColumn('sdate');">Toggle Last Column</button>
-      let selectRows = "<p><strong>Selection Type: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></p><button class='w2ui-btn' style='margin-left: 2px;margin-right: 0px' onclick='selectRow()'>Select Rows</button>"
+      let selectRows = "<p style='margin-left: 2px;'><strong>Selection Type: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></p><button class='w2ui-btn' style='margin-left: 2px;margin-right: 0px' onclick='selectRow()'>Select Rows</button>"
       let selectCells = "<button class='w2ui-btn' style='margin-left: 0px;margin-right: 0px' onclick='selectCell()'>select Cells</button>"
 
 
@@ -432,14 +469,14 @@
       let button2;
 
 
-      let buttonStart3 = "<p><strong>Show Hide: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></p><button class='w2ui-btn' style='margin-left: 2px;margin-right: 0px' onclick='w2ui.grid.showColumn("
+      let buttonStart3 = "<p style='margin-left: 2px;'><strong>Show Hide: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></p><button class='w2ui-btn' style='margin-left: 2px;margin-right: 0px' onclick='w2ui.grid.showColumn("
       let button3;
 
 
 
       document.getElementById("buttonsHere").innerHTML = ""
       document.getElementById("buttonsHere1").innerHTML = ""
-      document.getElementById("buttonsHere2").innerHTML = "<p><strong>Toggle Column: &nbsp;&nbsp;&nbsp;&nbsp;</strong></p>"
+      document.getElementById("buttonsHere2").innerHTML = "<p style='margin-left: 2px;'><strong>Toggle Column: &nbsp;&nbsp;&nbsp;&nbsp;</strong></p>"
 
       document.getElementById("buttonsHere").innerHTML += selectRows + selectCells
       //show All
