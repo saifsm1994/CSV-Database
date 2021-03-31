@@ -402,13 +402,24 @@
     function makeHeaders(arr, keyword) {
       let header = []
       if (Array.isArray(arr)) {
+        //unique entry for retaining the order of the request
+        let order = {};
+        order["field"] = "recid";
+        order["text"] = "Order";
+        order["size"] = '50px';
+        order["sortable"] = true;
+        order["clipboardCopy"] = true;
+        order["attr"] = 'align=center';
+        order["editable"] = { type: 'text' };
+        header.push(order)
+
         arr.forEach(element => {
           let innerHeader = {}
-          if (element == keyword) {
-            innerHeader["field"] = "recid";
-          } else {
-            innerHeader["field"] = element;
-          }
+          // if (element == keyword) {
+          // innerHeader["field"] = "recid";
+          // } else {
+          innerHeader["field"] = element;
+          // }
           innerHeader["text"] = element;
           innerHeader["size"] = '150px';
           innerHeader["sortable"] = true;
@@ -430,11 +441,11 @@
         arr.forEach(element => {
           //  { field: 'recid', text: 'ID', type: 'text' },
           let innerSearch = {}
-          if (element == keyword) {
-            innerSearch["field"] = "recid";
-          } else {
-            innerSearch["field"] = element;
-          }
+          // if (element == keyword) {
+          // innerSearch["field"] = "recid";
+          // } else {
+          innerSearch["field"] = element;
+          // }
           innerSearch["text"] = element;
           innerSearch["type"] = 'text';
           searches.push(innerSearch)
@@ -448,6 +459,12 @@
     function makeSorts(arr, keyword) {
       let sorts = []
       if (Array.isArray(arr)) {
+        let order = {};
+        order["field"] = "recid";
+        order["direction"] = '';
+        sorts.push(order)
+
+
         arr.forEach(element => {
           //  { field: 'recid', direction: '' },
           let innerSort = {}
@@ -535,22 +552,23 @@
 
 
       if (Array.isArray(cleanedArray)) {//takes cleaned and merged array and formats  not found rows
-        cleanedArray.forEach(row => {
+        cleanedArray.forEach((row,index)=> {
           let innerRecord = {}
+          innerRecord["recid"] = index
 
           headers.forEach(header => {
             if (row[header]) {
-              if (header == keyword) {
-                innerRecord["recid"] = row[header];
-              } else {
-                innerRecord[header] = row[header];
-              }
+              // if (header == keyword) {
+              // innerRecord["recid"] = row[header];
+              // } else {
+              innerRecord[header] = row[header];
+              // }
             } else {
-              if (header == keyword) {
-                innerRecord["recid"] = "Not Found";
-              } else {
-                innerRecord[header] = "Not Found";
-              }
+              // if (header == keyword) {
+              // innerRecord["recid"] = "Not Found";
+              // } else {
+              innerRecord[header] = "Not Found";
+              // }
             }
           });
           records.push(innerRecord)
@@ -589,7 +607,7 @@
 
     function makeButtons(headers, keyword) {
       // <button class="w2ui-btn" onclick="w2ui.grid.toggleColumn('sdate');">Toggle Last Column</button>
-      let selectRows = "<p><strong>Selection Type: </strong></p><button class='w2ui-btn' style='margin-left: 2px;margin-right: 0px' onclick='selectRow()'>Select Rows</button>"
+      let selectRows = "<p><strong>Selection Type: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></p><button class='w2ui-btn' style='margin-left: 2px;margin-right: 0px' onclick='selectRow()'>Select Rows</button>"
       let selectCells = "<button class='w2ui-btn' style='margin-left: 0px;margin-right: 0px' onclick='selectCell()'>select Cells</button>"
 
 
@@ -602,14 +620,14 @@
       let button2;
 
 
-      let buttonStart3 = "<p><strong>Show Hide</strong></p><button class='w2ui-btn' style='margin-left: 2px;margin-right: 0px' onclick='w2ui.grid.showColumn("
+      let buttonStart3 = "<p><strong>Show Hide: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></p><button class='w2ui-btn' style='margin-left: 2px;margin-right: 0px' onclick='w2ui.grid.showColumn("
       let button3;
 
 
 
       document.getElementById("buttonsHere").innerHTML = ""
       document.getElementById("buttonsHere1").innerHTML = ""
-      document.getElementById("buttonsHere2").innerHTML = ""
+      document.getElementById("buttonsHere2").innerHTML = "<p><strong>Toggle Column: &nbsp;&nbsp;&nbsp;&nbsp;</strong></p>"
 
       document.getElementById("buttonsHere").innerHTML += selectRows + selectCells
       //show All
@@ -623,7 +641,7 @@
 
 
       headers.forEach(element => {
-        if (element == keyword) {
+        if (element == "Order") {
           button = buttonStart + "\"recid\"" + buttonMid + element + buttonEnd;
         } else {
           button = buttonStart + "\"" + element + "\"" + buttonMid + element + buttonEnd;
@@ -637,6 +655,7 @@
     function makeGrid(obj, headers, keyword) {
       if (w2ui.hasOwnProperty('grid')) { w2ui['grid'].destroy(); }
       $('#grid').w2grid(obj);
+      headers = ["Order", ...headers]
       makeButtons(headers, keyword);
       selectCell()
     }
