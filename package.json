@@ -1,6 +1,6 @@
 {
   "name": "csv-database",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "parses csv into a searchable JavaScript Object",
   "main": "app.js",
   "scripts": {
