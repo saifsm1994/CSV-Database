@@ -48,7 +48,7 @@
     <p>Choose a category to search and a word or phrase to search for.</p>
   </div>
 
-  <div class="container" style=" margin-bottom: 100px;">
+  <div class="container" style=" margin-bottom: 100px;"  id="pageBody">
     <div class="row">
 
       <div class="col-sm-12 col-xs-12 card"
@@ -203,13 +203,11 @@
 
   <script>
 
-    function adjustTableSize(command) {
+function adjustTableSize(command) {
       let height = document.querySelector('#grid').style.minHeight
-      let width = document.querySelector('#grid').style.minWidth
       console.log("command" + command + "command")
       console.log("height", height)
       height = height.replace("px", "");
-      width = width.replace("%", "");
 
       if (command) {
         if (command == 1) {
@@ -221,34 +219,47 @@
 
         }
         if (command == 3) {
-          width = parseInt(width) + 10
-        }
+          // width = parseInt(width) + 10
+          // add class flex
+          $("#pageBody").removeClass("container");
+          $("#pageBody").addClass("container-flex");        }
         if (command == 4) {
-          width = parseInt(width) - 10
-          if(width < 80){width = 80}
-
+          // width = parseInt(width) + 10
+          // remove class flex
+          $("#pageBody").addClass("container");
+          $("#pageBody").removeClass("container-flex");
+        }
+        if (command == 5) {
+          height = 650
+          $("#pageBody").addClass("container");
+          $("#pageBody").removeClass("container-flex");
         }
       }
 
-      $('#grid').attr('style', 'min-height:' + height + 'px; min-width:' + width + '%');
+      localStorage.setItem('height', height);
+
+      $('#grid').attr('style', 'min-height:' + height + 'px; ');
       w2ui['grid'].resize();
     }
+
 
     function saveChoice() {
       let choice = document.getElementById("databaseSelect").value
       localStorage.setItem('choice', choice);
       // console.log('choice made', choice)
-
     }
 
     function fetchChoice() {
       const choice = localStorage.getItem('choice');
+      let height =  localStorage.getItem('height');
       if (choice) {
         document.getElementById("databaseSelect").value = choice;
-        // console.log('choice found', choice)
-
       }
+      if (height && height > 100 && height < 3000) {
+        $('#grid').attr('style', 'min-height:' + height + 'px;');
+      }else{console.log(height)}
     }
+
 
     function populateDropdowns() {
       let basicInfoParsed = JSON.parse(basicInfoUnprocessed)
