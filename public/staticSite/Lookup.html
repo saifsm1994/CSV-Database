@@ -504,54 +504,54 @@ function adjustTableSize(command) {
     }
 
 
-    function makeButtons(headers, keyword) {
+      function makeButtons(headers, keyword) {
 
 
-      let selectionTypeHeader = "<p><strong>Selection Type: </strong></p>"
-      let showHideHeader = "<p><strong>Show Hide: </strong></p>"
-      let adjustTableHeader = "<p><strong>Adjust Table Size: </strong></p>"
-
-
-
-
-      let selectRowsButtonStart="<button class='btn btn-primary' style='margin: 1px 1px 1px 1px;'  onclick='selectRow()'>Select Rows</button>"
-      let selectCellsButtonStart = "<button class='btn btn-primary' style='margin: 1px 1px 1px 1px;'   onclick='selectCell()'>select Cells</button>"
-
-
-      let buttonStart = "<button class='btn btn-primary' style='margin: 1px 1px 1px 1px;'    onclick='w2ui.grid.toggleColumn("
-      let buttonMid = ")'>"
-      let buttonEnd = '</button>'
-      let button;
-
-      let hideAllButtonStart = "<button class='btn btn-primary' style='margin: 1px 1px 1px 1px;'   onclick='w2ui.grid.hideColumn("
-      let hideAllButton;
-
-
-      let showAllButtonStart = "<button class='btn btn-primary' style='margin: 1px 1px 1px 1px;'  onclick='w2ui.grid.showColumn("
-      let showAllButton;
-
-      
-      let ExpandTableButtonHeight = "<button class='btn btn-primary' style='margin: 1px 1px 1px 1px;'  onclick='adjustTableSize(1)'>H+</button>"
-      let ExpandTableButtonHeightReduce = "<button class='btn btn-primary' style='margin: 1px 1px 1px 1px;'  onclick='adjustTableSize(2)'>H-</button>"
-      let ExpandTableButtonWidth = "<button class='btn btn-primary' style='margin: 1px 1px 1px 1px;'  onclick='adjustTableSize(3)'>W +</button>"
-      let ExpandTableButtonWidthReduce = "<button class='btn btn-primary' style='margin: 1px 1px 1px 1px;'  onclick='adjustTableSize(4)'>W -</button>"
-      let resetTableSize = "<button class='btn btn-primary' style='margin: 1px 1px 1px 1px;'  onclick='adjustTableSize(5)'>Reset</button>"
-      let ExpandTableButton = ExpandTableButtonHeightReduce + ExpandTableButtonHeight +ExpandTableButtonWidthReduce+ExpandTableButtonWidth + resetTableSize
-
-      document.getElementById("ExpandTableButtonHere").innerHTML =""
-      document.getElementById("ExpandTableButtonHere").innerHTML += adjustTableHeader + ExpandTableButton
+        let selectionTypeHeader = "<p><strong>Selection Type: </strong></p>"
+        let showHideHeader = "<p><strong>Show Hide: </strong></p>"
+        let adjustTableHeader = "<p><strong>Adjust Table Size: </strong></p>"
 
 
 
-      let i = 0;
-      document.getElementById("SelectionTypeButtonsHere").innerHTML = ""
-      console.log(i); i++;
-      document.getElementById("SelectionTypeButtonsHere").innerHTML += selectionTypeHeader + selectRowsButtonStart + selectCellsButtonStart
-      console.log(i); i++;
+
+        let selectRowsButtonStart = "<button class='btn btn-primary' style='margin: 1px 1px 1px 1px;'  onclick='selectRow()'>Select Rows</button>"
+        let selectCellsButtonStart = "<button class='btn btn-primary' style='margin: 1px 1px 1px 1px;'   onclick='selectCell()'>select Cells</button>"
 
 
-      document.getElementById("showHideAllButtonsHere").innerHTML = ""
-      //show All
+        let buttonStart = "<button class='btn btn-primary' style='margin: 1px 1px 1px 1px;'    onclick='w2ui.grid.toggleColumn("
+        let buttonMid = ")'>"
+        let buttonEnd = '</button>'
+        let button;
+
+        let hideAllButtonStart = "<button class='btn btn-primary' style='margin: 1px 1px 1px 1px;'   onclick='w2ui.grid.hideColumn("
+        let hideAllButton;
+
+
+        let showAllButtonStart = "<button class='btn btn-primary' style='margin: 1px 1px 1px 1px;'  onclick='w2ui.grid.showColumn("
+        let showAllButton;
+
+
+        let ExpandTableButtonHeight = "<button class='btn btn-primary' style='margin: 1px 1px 1px 1px;'  onclick='adjustTableSize(1)'>H+</button>"
+        let ExpandTableButtonHeightReduce = "<button class='btn btn-primary' style='margin: 1px 1px 1px 1px;'  onclick='adjustTableSize(2)'>H-</button>"
+        let ExpandTableButtonWidth = "<button class='btn btn-primary' style='margin: 1px 1px 1px 1px;'  onclick='adjustTableSize(3)'>W +</button>"
+        let ExpandTableButtonWidthReduce = "<button class='btn btn-primary' style='margin: 1px 1px 1px 1px;'  onclick='adjustTableSize(4)'>W -</button>"
+        let resetTableSize = "<button class='btn btn-primary' style='margin: 1px 1px 1px 1px;'  onclick='adjustTableSize(5)'>Reset</button>"
+        let ExpandTableButton = ExpandTableButtonHeightReduce + ExpandTableButtonHeight + ExpandTableButtonWidthReduce + ExpandTableButtonWidth + resetTableSize
+
+        document.getElementById("ExpandTableButtonHere").innerHTML = ""
+        document.getElementById("ExpandTableButtonHere").innerHTML += adjustTableHeader + ExpandTableButton
+
+
+
+        let i = 0;
+        document.getElementById("SelectionTypeButtonsHere").innerHTML = ""
+        console.log(i); i++;
+        document.getElementById("SelectionTypeButtonsHere").innerHTML += selectionTypeHeader + selectRowsButtonStart + selectCellsButtonStart
+        console.log(i); i++;
+
+
+        document.getElementById("showHideAllButtonsHere").innerHTML = ""
+        //show All
         let all = headers.map(element => "\"" + element + "\"").join(",")
 
         showAllButton = showHideHeader + showAllButtonStart + "\"recid\"," + all + buttonMid + "Show All" + buttonEnd;
@@ -559,20 +559,20 @@ function adjustTableSize(command) {
         //Hide All
         hideAllButton = hideAllButtonStart + "\"recid\"," + all + buttonMid + "Hide All" + buttonEnd;
         document.getElementById("showHideAllButtonsHere").innerHTML += hideAllButton
-        
 
-      //toggle column buttons
-      document.getElementById("toggleColumnsButtonsHere").innerHTML = "<p style='margin-left: 2px;'><strong>Toggle Column: &nbsp;&nbsp;&nbsp;&nbsp;</strong></p>"
-      headers.forEach(element => {
-        if (element == "Order") {
-          button = buttonStart + "\"recid\"" + buttonMid + element + buttonEnd;
-        } else {
-          button = buttonStart + "\"" + element + "\"" + buttonMid + element + buttonEnd;
-        }
-        document.getElementById("toggleColumnsButtonsHere").innerHTML += button
-      });
 
-    }
+        //toggle column buttons
+        document.getElementById("toggleColumnsButtonsHere").innerHTML = "<p style='margin-left: 2px;'><strong>Toggle Column: &nbsp;&nbsp;&nbsp;&nbsp;</strong></p>"
+        headers.forEach(element => {
+          if (element == "Order") {
+            button = buttonStart + "\"recid\"" + buttonMid + element + buttonEnd;
+          } else {
+            button = buttonStart + "\"" + element + "\"" + buttonMid + element + buttonEnd;
+          }
+          document.getElementById("toggleColumnsButtonsHere").innerHTML += button
+        });
+
+      }
 
 
     function makeGrid(obj, headers, keyword) {

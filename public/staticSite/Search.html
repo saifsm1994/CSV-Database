@@ -48,7 +48,7 @@
     <p>Choose a category to search and a word or phrase to search for.</p>
   </div>
 
-  <div class="container" style=" margin-bottom: 100px;"  id="pageBody">
+  <div class="container" style=" margin-bottom: 100px;" id="pageBody">
     <div class="row">
 
       <div class="col-sm-12 col-xs-12 card"
@@ -188,9 +188,9 @@
       <div class="col-xl-12 col-md-12 col-sm-12 col-xs-12 card" style="margin-top: 1%">
         <h3>Results</h3>
         <div id="" class="row">
-            <div id="SelectionTypeButtonsHere" class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-xs-12 "></div>
-            <div id="showHideAllButtonsHere" class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-xs-12 "></div>
-            <div id="ExpandTableButtonHere" class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-xs-12 "></div>
+          <div id="SelectionTypeButtonsHere" class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-xs-12 "></div>
+          <div id="showHideAllButtonsHere" class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-xs-12 "></div>
+          <div id="ExpandTableButtonHere" class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-xs-12 "></div>
         </div>
         <br />
         <div id="toggleColumnsButtonsHere" class="row"></div> <br>
@@ -203,7 +203,7 @@
 
   <script>
 
-function adjustTableSize(command) {
+    function adjustTableSize(command) {
       let height = document.querySelector('#grid').style.minHeight
       console.log("command" + command + "command")
       console.log("height", height)
@@ -215,14 +215,15 @@ function adjustTableSize(command) {
         }
         if (command == 2) {
           height = parseInt(height) - 100
-          if(height < 200){height = 200}
+          if (height < 200) { height = 200 }
 
         }
         if (command == 3) {
           // width = parseInt(width) + 10
           // add class flex
           $("#pageBody").removeClass("container");
-          $("#pageBody").addClass("container-flex");        }
+          $("#pageBody").addClass("container-flex");
+        }
         if (command == 4) {
           // width = parseInt(width) + 10
           // remove class flex
@@ -251,13 +252,13 @@ function adjustTableSize(command) {
 
     function fetchChoice() {
       const choice = localStorage.getItem('choice');
-      let height =  localStorage.getItem('height');
+      let height = localStorage.getItem('height');
       if (choice) {
         document.getElementById("databaseSelect").value = choice;
       }
       if (height && height > 100 && height < 3000) {
         $('#grid').attr('style', 'min-height:' + height + 'px;');
-      }else{console.log(height)}
+      } else { console.log(height) }
     }
 
 
@@ -695,10 +696,10 @@ function adjustTableSize(command) {
       let ExpandTableButtonHeightReduce = "<button class='btn btn-primary' style='margin: 1px 1px 1px 1px;'  onclick='adjustTableSize(2)'>H-</button>"
       let ExpandTableButtonWidth = "<button class='btn btn-primary' style='margin: 1px 1px 1px 1px;'  onclick='adjustTableSize(3)'>W +</button>"
       let ExpandTableButtonWidthReduce = "<button class='btn btn-primary' style='margin: 1px 1px 1px 1px;'  onclick='adjustTableSize(4)'>W -</button>"
-      let ExpandTableButton = ExpandTableButtonHeightReduce + ExpandTableButtonHeight + ExpandTableButtonWidthReduce + ExpandTableButtonWidth
+      let resetTableSize = "<button class='btn btn-primary' style='margin: 1px 1px 1px 1px;'  onclick='adjustTableSize(5)'>Reset</button>"
+      let ExpandTableButton = ExpandTableButtonHeightReduce + ExpandTableButtonHeight + ExpandTableButtonWidthReduce + ExpandTableButtonWidth + resetTableSize
 
-
-      document.getElementById("ExpandTableButtonHere").innerHTML =""
+      document.getElementById("ExpandTableButtonHere").innerHTML = ""
       document.getElementById("ExpandTableButtonHere").innerHTML += adjustTableHeader + ExpandTableButton
 
 
