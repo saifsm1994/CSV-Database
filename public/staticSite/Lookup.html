@@ -107,32 +107,37 @@
 
   <script>
 
-    function adjustTableSize(command){
+function adjustTableSize(command) {
       let height = document.querySelector('#grid').style.minHeight
       let width = document.querySelector('#grid').style.minWidth
-      console.log("command"+command+"command")
-      console.log("height",height)
-      height = height.replace("px","");
-      width = width.replace("%","");
+      console.log("command" + command + "command")
+      console.log("height", height)
+      height = height.replace("px", "");
+      width = width.replace("%", "");
 
-      if(command){
-        if(command == 1){
+      if (command) {
+        if (command == 1) {
           height = parseInt(height) + 100
         }
-        if(command == 2){
+        if (command == 2) {
           height = parseInt(height) - 100
+          if(height < 200){height = 200}
+
         }
-        if(command == 3){
+        if (command == 3) {
           width = parseInt(width) + 10
         }
-        if(command == 4){
+        if (command == 4) {
           width = parseInt(width) - 10
+          if(width < 80){width = 80}
+
         }
       }
 
-      $('#grid').attr('style','min-height:'+height+'px; min-width:'+ width + '%');
+      $('#grid').attr('style', 'min-height:' + height + 'px; min-width:' + width + '%');
       w2ui['grid'].resize();
     }
+
 
     function saveChoice() {
       let choice = document.getElementById("databaseSelect").value

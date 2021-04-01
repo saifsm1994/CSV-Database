@@ -217,12 +217,16 @@
         }
         if (command == 2) {
           height = parseInt(height) - 100
+          if(height < 200){height = 200}
+
         }
         if (command == 3) {
           width = parseInt(width) + 10
         }
         if (command == 4) {
           width = parseInt(width) - 10
+          if(width < 80){width = 80}
+
         }
       }
 
