@@ -91,10 +91,14 @@
 
       <div class="col-xl-12 col-md-12 col-sm-12 col-xs-12 card" style="margin-top: 5%">
         <h3>Results</h3>
-        <div id="buttonsHere" class="row"></div>
-        <div id="buttonsHere1" class="row"></div>
-        <div id="buttonsHere2" class="row"></div> <br>
-        <div id="grid" style="min-height: 450px;"></div>
+        <div id="" class="row">
+            <div id="SelectionTypeButtonsHere" class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-xs-12 "></div>
+            <div id="showHideAllButtonsHere" class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-xs-12 "></div>
+            <div id="ExpandTableButtonHere" class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-xs-12 "></div>
+        </div>
+        <br />
+        <div id="toggleColumnsButtonsHere" class="row"></div> <br>
+        <div id="grid" style="min-height: 650px; min-width: 100%"></div>
       </div>
 
     </div>
@@ -102,6 +106,33 @@
   </div>
 
   <script>
+
+    function adjustTableSize(command){
+      let height = document.querySelector('#grid').style.minHeight
+      let width = document.querySelector('#grid').style.minWidth
+      console.log("command"+command+"command")
+      console.log("height",height)
+      height = height.replace("px","");
+      width = width.replace("%","");
+
+      if(command){
+        if(command == 1){
+          height = parseInt(height) + 100
+        }
+        if(command == 2){
+          height = parseInt(height) - 100
+        }
+        if(command == 3){
+          width = parseInt(width) + 10
+        }
+        if(command == 4){
+          width = parseInt(width) - 10
+        }
+      }
+
+      $('#grid').attr('style','min-height:'+height+'px; min-width:'+ width + '%');
+      w2ui['grid'].resize();
+    }
 
     function saveChoice() {
       let choice = document.getElementById("databaseSelect").value
@@ -142,9 +173,9 @@
         fetchChoice()
 
       } else {
-        console.log(obj)
-        console.log(obj.basicInfo)
-        console.log(obj.basicInfo.databases)
+        console.log("return obj is", obj)
+        // console.log(obj.basicInfo)
+        // console.log(obj.basicInfo.databases)
 
       }
     }
@@ -185,11 +216,11 @@
       let urlEnd = databaseSelectValue + "/" + joined
       let fullURL = "/" + urlEnd
 
-      console.log(fullURL)
+      // console.log(fullURL)
 
       let returnGet = httpGet(fullURL);
       try {
-        console.log(returnGet)
+        // console.log(returnGet)
         returnGet = JSON.parse(returnGet);
         let returnedEntries = Object.keys(returnGet)
 
@@ -211,13 +242,18 @@
 
         let table = makeTable(headers, searches, sorts, records)
 
-        if (table) {
+        try{
+          if (table) {
           makeGrid(table, returnGet["0"], keyword);
         }
+        }catch{
+          console.log("make tables failed partially")
+        }
+
       } catch{
         //if no results returned - create message in table format
         console.log("failed")
-        // document.getElementById('grid').innerHTML = "Failed to find any results - " + returnGet
+        console.log(returnGet)
         returnGet = returnGet.replace("Available keys in this database include:","").split(",")
         let keyword = "Results";
         let message = "Message";
@@ -294,7 +330,7 @@
           // } else {
           innerSearch["field"] = element;
           // }
-          innerSearch["text"] = element;
+          innerSearch["caption"] = element;
           innerSearch["type"] = 'text';
           searches.push(innerSearch)
         });
@@ -331,7 +367,7 @@
 
     function makeRecords(headers, arrOfObjs, keyword) {
       let records = []
-      console.log("arrOfObjs", arrOfObjs)
+      // console.log("arrOfObjs", arrOfObjs)
       let cleanedArray = [];
       let mergeDuplicatesCheckbox = document.getElementById("mergeDuplicatesCheckbox").checked
 
@@ -363,7 +399,7 @@
             });
 
             let mergeObj = {}
-            console.log("mergeArray", mergeArray)
+            // console.log("mergeArray", mergeArray)
             mergeArray.forEach(childObj => {
               headers.forEach(header => {
                 if (mergeObj[header]) {
@@ -455,47 +491,70 @@
 
 
     function makeButtons(headers, keyword) {
-      // <button class="w2ui-btn" onclick="w2ui.grid.toggleColumn('sdate');">Toggle Last Column</button>
-      let selectRows = "<p style='margin-left: 2px;'><strong>Selection Type: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></p><button class='w2ui-btn' style='margin-left: 2px;margin-right: 0px' onclick='selectRow()'>Select Rows</button>"
-      let selectCells = "<button class='w2ui-btn' style='margin-left: 0px;margin-right: 0px' onclick='selectCell()'>select Cells</button>"
 
 
-      let buttonStart = "<button class='w2ui-btn' style='margin-left: 0px;margin-right: 0px'  onclick='w2ui.grid.toggleColumn("
+      let selectionTypeHeader = "<p><strong>Selection Type: </strong></p>"
+      let showHideHeader = "<p><strong>Show Hide: </strong></p>"
+      let adjustTableHeader = "<p><strong>Adjust Table Size: </strong></p>"
+
+
+
+
+      let selectRowsButtonStart="<button class='btn btn-primary' style='margin: 1px 1px 1px 1px;'  onclick='selectRow()'>Select Rows</button>"
+      let selectCellsButtonStart = "<button class='btn btn-primary' style='margin: 1px 1px 1px 1px;'   onclick='selectCell()'>select Cells</button>"
+
+
+      let buttonStart = "<button class='btn btn-primary' style='margin: 1px 1px 1px 1px;'    onclick='w2ui.grid.toggleColumn("
       let buttonMid = ")'>"
       let buttonEnd = '</button>'
       let button;
 
-      let buttonStart2 = "<button class='w2ui-btn' style='margin-left: 0px;margin-right: 0px' onclick='w2ui.grid.hideColumn("
-      let button2;
+      let hideAllButtonStart = "<button class='btn btn-primary' style='margin: 1px 1px 1px 1px;'   onclick='w2ui.grid.hideColumn("
+      let hideAllButton;
 
 
-      let buttonStart3 = "<p style='margin-left: 2px;'><strong>Show Hide: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></p><button class='w2ui-btn' style='margin-left: 2px;margin-right: 0px' onclick='w2ui.grid.showColumn("
-      let button3;
+      let showAllButtonStart = "<button class='btn btn-primary' style='margin: 1px 1px 1px 1px;'  onclick='w2ui.grid.showColumn("
+      let showAllButton;
+
+      
+      let ExpandTableButtonHeight = "<button class='btn btn-primary' style='margin: 1px 1px 1px 1px;'  onclick='adjustTableSize(1)'>H+</button>"
+      let ExpandTableButtonHeightReduce = "<button class='btn btn-primary' style='margin: 1px 1px 1px 1px;'  onclick='adjustTableSize(2)'>H-</button>"
+      let ExpandTableButtonWidth = "<button class='btn btn-primary' style='margin: 1px 1px 1px 1px;'  onclick='adjustTableSize(3)'>W +</button>"
+      let ExpandTableButtonWidthReduce = "<button class='btn btn-primary' style='margin: 1px 1px 1px 1px;'  onclick='adjustTableSize(4)'>W -</button>"
+      let ExpandTableButton = ExpandTableButtonHeightReduce + ExpandTableButtonHeight +ExpandTableButtonWidthReduce+ExpandTableButtonWidth
+
+      document.getElementById("ExpandTableButtonHere").innerHTML =""
+      document.getElementById("ExpandTableButtonHere").innerHTML += adjustTableHeader + ExpandTableButton
 
 
 
-      document.getElementById("buttonsHere").innerHTML = ""
-      document.getElementById("buttonsHere1").innerHTML = ""
-      document.getElementById("buttonsHere2").innerHTML = "<p style='margin-left: 2px;'><strong>Toggle Column: &nbsp;&nbsp;&nbsp;&nbsp;</strong></p>"
+      let i = 0;
+      document.getElementById("SelectionTypeButtonsHere").innerHTML = ""
+      console.log(i); i++;
+      document.getElementById("SelectionTypeButtonsHere").innerHTML += selectionTypeHeader + selectRowsButtonStart + selectCellsButtonStart
+      console.log(i); i++;
 
-      document.getElementById("buttonsHere").innerHTML += selectRows + selectCells
+
+      document.getElementById("showHideAllButtonsHere").innerHTML = ""
       //show All
-      let all = headers.map(element => "\"" + element + "\"").join(",")
-      button3 = buttonStart3 + "\"recid\"," + all + buttonMid + "Show All" + buttonEnd;
-      document.getElementById("buttonsHere1").innerHTML += button3
+        let all = headers.map(element => "\"" + element + "\"").join(",")
 
-      //Hide All
-      button2 = buttonStart2 + "\"recid\"," + all + buttonMid + "Hide All" + buttonEnd;
-      document.getElementById("buttonsHere1").innerHTML += button2
+        showAllButton = showHideHeader + showAllButtonStart + "\"recid\"," + all + buttonMid + "Show All" + buttonEnd;
+        document.getElementById("showHideAllButtonsHere").innerHTML += showAllButton
+        //Hide All
+        hideAllButton = hideAllButtonStart + "\"recid\"," + all + buttonMid + "Hide All" + buttonEnd;
+        document.getElementById("showHideAllButtonsHere").innerHTML += hideAllButton
+        
 
-
+      //toggle column buttons
+      document.getElementById("toggleColumnsButtonsHere").innerHTML = "<p style='margin-left: 2px;'><strong>Toggle Column: &nbsp;&nbsp;&nbsp;&nbsp;</strong></p>"
       headers.forEach(element => {
         if (element == "Order") {
           button = buttonStart + "\"recid\"" + buttonMid + element + buttonEnd;
         } else {
           button = buttonStart + "\"" + element + "\"" + buttonMid + element + buttonEnd;
         }
-        document.getElementById("buttonsHere2").innerHTML += button
+        document.getElementById("toggleColumnsButtonsHere").innerHTML += button
       });
 
     }

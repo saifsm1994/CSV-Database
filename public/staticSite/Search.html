@@ -61,7 +61,7 @@
               </select>
             </div>
             <h3>Search
-                <!-- <i class="fa fa-info-circle" style="color: black;" title=""></i> -->
+              <!-- <i class="fa fa-info-circle" style="color: black;" title=""></i> -->
             </h3>
             <div class="row" style="margin-top: 10px;">
               <div class="col-sm-3 col-xs-12">
@@ -187,11 +187,14 @@
 
       <div class="col-xl-12 col-md-12 col-sm-12 col-xs-12 card" style="margin-top: 1%">
         <h3>Results</h3>
-        <div id="buttonsHere" class="row"></div>
-        <div id="buttonsHere1" class="row"></div>
-        <div id="buttonsHere2" class="row"></div>
-        <br>
-        <div id="grid" style="min-height: 450px; "></div>
+        <div id="" class="row">
+            <div id="SelectionTypeButtonsHere" class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-xs-12 "></div>
+            <div id="showHideAllButtonsHere" class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-xs-12 "></div>
+            <div id="ExpandTableButtonHere" class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-xs-12 "></div>
+        </div>
+        <br />
+        <div id="toggleColumnsButtonsHere" class="row"></div> <br>
+        <div id="grid" style="min-height: 650px; min-width: 100%"></div>
       </div>
 
     </div>
@@ -199,6 +202,33 @@
   </div>
 
   <script>
+
+    function adjustTableSize(command) {
+      let height = document.querySelector('#grid').style.minHeight
+      let width = document.querySelector('#grid').style.minWidth
+      console.log("command" + command + "command")
+      console.log("height", height)
+      height = height.replace("px", "");
+      width = width.replace("%", "");
+
+      if (command) {
+        if (command == 1) {
+          height = parseInt(height) + 100
+        }
+        if (command == 2) {
+          height = parseInt(height) - 100
+        }
+        if (command == 3) {
+          width = parseInt(width) + 10
+        }
+        if (command == 4) {
+          width = parseInt(width) - 10
+        }
+      }
+
+      $('#grid').attr('style', 'min-height:' + height + 'px; min-width:' + width + '%');
+      w2ui['grid'].resize();
+    }
 
     function saveChoice() {
       let choice = document.getElementById("databaseSelect").value
@@ -378,6 +408,10 @@
 
         if (!headers || !searches || !sorts || !records) { alert("process failed") }
         let table = makeTable(headers, searches, sorts, records)
+        console.log("headers", headers)
+        console.log("searches", searches)
+        console.log("sorts", sorts)
+        console.log("records", records)
         if (table) {
           makeGrid(table, headerKeys, keyword);
         }
@@ -439,16 +473,24 @@
 
     function makeSearches(arr, keyword) {
       let searches = []
+
+      let innerSearch = {}
+
+      innerSearch["field"] = 'recid';
+      innerSearch["caption"] = 'Order';
+      innerSearch["type"] = 'text';
+      searches.push(innerSearch)
+
       if (Array.isArray(arr)) {
         arr.forEach(element => {
           //  { field: 'recid', text: 'ID', type: 'text' },
-          let innerSearch = {}
+          innerSearch = {}
           // if (element == keyword) {
           // innerSearch["field"] = "recid";
           // } else {
           innerSearch["field"] = element;
           // }
-          innerSearch["text"] = element;
+          innerSearch["caption"] = element;
           innerSearch["type"] = 'text';
           searches.push(innerSearch)
         });
@@ -554,7 +596,7 @@
 
 
       if (Array.isArray(cleanedArray)) {//takes cleaned and merged array and formats  not found rows
-        cleanedArray.forEach((row,index)=> {
+        cleanedArray.forEach((row, index) => {
           let innerRecord = {}
           innerRecord["recid"] = index
 
@@ -608,47 +650,71 @@
     }
 
     function makeButtons(headers, keyword) {
-      // <button class="w2ui-btn" onclick="w2ui.grid.toggleColumn('sdate');">Toggle Last Column</button>
-      let selectRows = "<p><strong>Selection Type: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></p><button class='w2ui-btn' style='margin-left: 2px;margin-right: 0px' onclick='selectRow()'>Select Rows</button>"
-      let selectCells = "<button class='w2ui-btn' style='margin-left: 0px;margin-right: 0px' onclick='selectCell()'>select Cells</button>"
 
 
-      let buttonStart = "<button class='w2ui-btn' style='margin-left: 0px;margin-right: 0px'  onclick='w2ui.grid.toggleColumn("
+      let selectionTypeHeader = "<p><strong>Selection Type: </strong></p>"
+      let showHideHeader = "<p><strong>Show Hide: </strong></p>"
+      let adjustTableHeader = "<p><strong>Adjust Table Size: </strong></p>"
+
+
+
+
+      let selectRowsButtonStart = "<button class='btn btn-primary' style='margin: 1px 1px 1px 1px;'  onclick='selectRow()'>Select Rows</button>"
+      let selectCellsButtonStart = "<button class='btn btn-primary' style='margin: 1px 1px 1px 1px;'   onclick='selectCell()'>select Cells</button>"
+
+
+      let buttonStart = "<button class='btn btn-primary' style='margin: 1px 1px 1px 1px;'    onclick='w2ui.grid.toggleColumn("
       let buttonMid = ")'>"
       let buttonEnd = '</button>'
       let button;
 
-      let buttonStart2 = "<button class='w2ui-btn' style='margin-left: 0px;margin-right: 0px' onclick='w2ui.grid.hideColumn("
-      let button2;
+      let hideAllButtonStart = "<button class='btn btn-primary' style='margin: 1px 1px 1px 1px;'   onclick='w2ui.grid.hideColumn("
+      let hideAllButton;
 
 
-      let buttonStart3 = "<p><strong>Show Hide: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></p><button class='w2ui-btn' style='margin-left: 2px;margin-right: 0px' onclick='w2ui.grid.showColumn("
-      let button3;
+      let showAllButtonStart = "<button class='btn btn-primary' style='margin: 1px 1px 1px 1px;'  onclick='w2ui.grid.showColumn("
+      let showAllButton;
+
+
+      let ExpandTableButtonHeight = "<button class='btn btn-primary' style='margin: 1px 1px 1px 1px;'  onclick='adjustTableSize(1)'>H+</button>"
+      let ExpandTableButtonHeightReduce = "<button class='btn btn-primary' style='margin: 1px 1px 1px 1px;'  onclick='adjustTableSize(2)'>H-</button>"
+      let ExpandTableButtonWidth = "<button class='btn btn-primary' style='margin: 1px 1px 1px 1px;'  onclick='adjustTableSize(3)'>W +</button>"
+      let ExpandTableButtonWidthReduce = "<button class='btn btn-primary' style='margin: 1px 1px 1px 1px;'  onclick='adjustTableSize(4)'>W -</button>"
+      let ExpandTableButton = ExpandTableButtonHeightReduce + ExpandTableButtonHeight + ExpandTableButtonWidthReduce + ExpandTableButtonWidth
+
+
+      document.getElementById("ExpandTableButtonHere").innerHTML =""
+      document.getElementById("ExpandTableButtonHere").innerHTML += adjustTableHeader + ExpandTableButton
 
 
 
-      document.getElementById("buttonsHere").innerHTML = ""
-      document.getElementById("buttonsHere1").innerHTML = ""
-      document.getElementById("buttonsHere2").innerHTML = "<p><strong>Toggle Column: &nbsp;&nbsp;&nbsp;&nbsp;</strong></p>"
+      let i = 0;
+      document.getElementById("SelectionTypeButtonsHere").innerHTML = ""
+      console.log(i); i++;
+      document.getElementById("SelectionTypeButtonsHere").innerHTML += selectionTypeHeader + selectRowsButtonStart + selectCellsButtonStart
+      console.log(i); i++;
 
-      document.getElementById("buttonsHere").innerHTML += selectRows + selectCells
+
+      document.getElementById("showHideAllButtonsHere").innerHTML = ""
       //show All
       let all = headers.map(element => "\"" + element + "\"").join(",")
-      button3 = buttonStart3 + "\"recid\"," + all + buttonMid + "Show All" + buttonEnd;
-      document.getElementById("buttonsHere1").innerHTML += button3
 
+      showAllButton = showHideHeader + showAllButtonStart + "\"recid\"," + all + buttonMid + "Show All" + buttonEnd;
+      document.getElementById("showHideAllButtonsHere").innerHTML += showAllButton
       //Hide All
-      button2 = buttonStart2 + "\"recid\"," + all + buttonMid + "Hide All" + buttonEnd;
-      document.getElementById("buttonsHere1").innerHTML += button2
+      hideAllButton = hideAllButtonStart + "\"recid\"," + all + buttonMid + "Hide All" + buttonEnd;
+      document.getElementById("showHideAllButtonsHere").innerHTML += hideAllButton
 
 
+      //toggle column buttons
+      document.getElementById("toggleColumnsButtonsHere").innerHTML = "<p style='margin-left: 2px;'><strong>Toggle Column: &nbsp;&nbsp;&nbsp;&nbsp;</strong></p>"
       headers.forEach(element => {
         if (element == "Order") {
           button = buttonStart + "\"recid\"" + buttonMid + element + buttonEnd;
         } else {
           button = buttonStart + "\"" + element + "\"" + buttonMid + element + buttonEnd;
         }
-        document.getElementById("buttonsHere2").innerHTML += button
+        document.getElementById("toggleColumnsButtonsHere").innerHTML += button
       });
 
     }
