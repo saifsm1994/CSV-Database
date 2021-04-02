@@ -19,7 +19,7 @@ CSV-Database transforms CSV spreadsheets into live searchable online portals. No
 -   [Why CSV-Database?](#why-CSV-Database)
 -   [Using CSV-Database](#using-CSV-Database)
 -   [Importing your CSV](#importing-your-CSV)
--   [Available Pages](#pages)
+-   [Available Pages & Functionality](#pages)
 -   [Known issues](#known-issues)
 -   [Contributing](#contributing)
 -   [Packages Used](#packages-used)
@@ -93,10 +93,37 @@ First, make sure you have a copy of NodeJS installed. You can [download NodeJS h
 ## Pages
 
 There are 4 main pages in CSV Database. These are
-    1. The Upload Page - This page allows you to upload new CSV files and select their respective keywords
+
+  * 1. The Upload Page - This page allows you to upload new CSV files and select their respective keywords
     2. The Delete Page - This page lists all loaded CSV databases and allow you to delete them
     3. The Lookup Page - This page allows you to lookup rows based on the values listed in their Keyword Columns directly (e.g. if your keyword is First Name, it would let you search for all users with the name John instantly)
     4. The Search Page - This page allows you to search through any column of your CSV file and return all exact or partial matches for a given search string. It also allows you to specify terms that MUST or MUST NOT appear in the returned rows (e.g. all rows with a name beginning with Jo in the First Name column, but only if their last name is not Smith)
+
+    Note: Both the Lookup and Search pages allow you to specify which database to search via a dropdown
+
+    ### Lookup Page Functionality
+
+      This page accepts either a list of columns featuring the keyword you wish to lookup corresponding row values for, or a comma seperated list of the same.
+      Additional queries do not significantly increase time spent for the query, but the total query length is currently limited to 2000 characters. 
+
+    ### Search Page Functionality
+
+      This page has severeal elements
+
+      * 1. Search bars
+            These allow you to search up to 5 different columns simultaneously
+            Multiple search terms can be used for each column via the use of commas. (e.g. search term1, search term 2) 
+            Responses from all queries are de-duplicated and merged together
+        
+        2. Must Include and Must Exclude bars
+            These are filters which allow you to remove rows from the returned response depending on whether they include the given term in any column
+        
+        3. Check boxes and pagination
+            These allow for additional query customization including:
+            - Merge Duplicates - returned responses with the same keyword are merged. Unique column values are appended together with line breaks and duplicates are reduced to 1 instance
+            - Exact Search - requires that a given query exactly match the full column value - unchecking this would allow for partial matches such as a query of Joh in a First Name column matching with both columns with a value of Jo and columns with a value of John
+            - Case Insensitive - determines case sensitivity
+            - Entries per page - changes how many unique keyword responses you get per page. Default is set to 500 responses.
 
 ## Known issues
 
