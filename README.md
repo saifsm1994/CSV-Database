@@ -1,145 +1,122 @@
-# csv-database
+**What is `CSV-Database`?**
 
-csv-database is a simple NodeJS application for turning any CSV file into a live searchable local website.
+CSV-Database is a free software solution to convert large spreadsheets into instantly accessible online portals for your local network. It has been designed to allow almost anyone to use without without any need to know programming languages or data manipulation tools and can work with extremely large spreadsheets of well over 100k rows of data. It does require the use of  [NodeJS](https://nodejs.org/en/) but should work on Windows, Mac or Linux machines perfectly.
 
-Excel often has issues with larger spreadsheets which are >15,000+ lines long and not everyone can directly manipulate such files. The goal of this tool is to greatly simplify the process of searching through extremely large spreadsheets.
+--
 
-## Installation
+**Repo Note**: The `main` branch is an *in development* version of CSV-Database. This may be substantially different from the latest [releases of CSV-Database](https://github.com/saifsm1994/CSV-Database/releases).
 
-### Complete Beginners Installation Guide
-
-I will be assuming users have no knowledge of web development applications like nodejs. I have not tested this application on Linux or MacOS but I imagine installation will be relatively similar
-
-Installation is relatively simple, but we need a few softwares to be installed. These are 
-
-* NodeJS
-* Yarn
-
-Installing these can be simplified by installing them through a package manager per the next few steps
-
-* Install package manager chocolatey per the instructions here  
-[https://chocolatey.org/install](https://chocolatey.org/install)
-* Once it finishes installing run "terminal" or "Command Prompt as Admin"
-* Use the following command to install nodejs and yarn
-
-```bash
-choco install nodejs yarn -y
-```
-
-* Once these have finished installing download all files in this directory and place them in a folder
-* Open the chosen folder and start the terminal there by following the instructions [here](https://www.groovypost.com/howto/open-command-window-terminal-window-specific-folder-windows-mac-linux/)
-* Once opened, use the following command to install the package dependencies
-
-```bash
-yarn install
-```
-
-* Once this finishes we can start the server with the command 
-
-```bash
-yarn start
-```
-
-* Closing the terminal window will cause the application to stop, starting it again can be done by opening the terminal  in the given folder again and using the above "yarn start" command
-
-Server will be available at [http://localhost:3000/](http://localhost:3000/)
-
-
-### Regular Installation Guide
-
-Download or Clone entire repository, cd into repo and run
-
-```bash
-yarn install
-```
-
-OR 
-
-```bash
-npm install
-```
-
-Service can be started with 
-
-```bash
-npm start
-```
-
-OR 
-
-```bash
-yarn start
-```
-
-Server will be available at [http://localhost:3000/](http://localhost:3000/)
-
-
-## Usage:
-
-### Starting the server
-Please see installation for more details on how to get things set up, but once you are ready to go we can start the server by:
-1. Going to the directory in which we have stored the files for this application
-2. Opening terminal (or Powershell or Command Prompt) within that directory 
-3. Typing the command
-```bash
-yarn start
-```
-4. Navigating to [http://localhost:3000/static](http://localhost:3000/static)
-
-### Preparing the sheet
-1. Save your spreadsheet as a CSV File, make sure no columns exist that don't have headers.
-1. Ensure there is a header term that has a value present in every row. These will be used to lookup the entries in your spreadsheet in the lookup page. This will be called our 'keyword'
-     1. Ideally these would be unique. An example of this can be a unique user identifier, the name of a city, or even a number. 
-     1. If no identifier is present the keyword **"no key found"** will be assigned to the given row
-     1. **Example:** Using the keyword "User1" will return any rows with the value "User1" in the chosen keyword field.
-
-1.  Once  this is done we can proceed to the next step
-
-### Uploading the Database
-1. Proceed to  [http://localhost:3000/static/upload](http://localhost:3000/static/upload)
-2. Click on Choose File and select your chosen CSV File
-3. Type your keyword into the input box exactly as it is in your column header
-4. Click upload
-5. Once the upload succeeds you can proceed to [http://localhost:3000/Static/Lookup](http://localhost:3000/Static/Lookup), Once the database finishes parsing (.1 - 3 minutes) refreshing this page should show your new database in the "Database select" dropdown
-
-### Looking up values based on their unique identifier
-
-1. Proceed to  [http://localhost:3000/static/lookup](http://localhost:3000/static/lookup)
-2. Select a database from the dropdown, you may need to reload the page after a minute or two if your dataset is particularly large
-3. Type in either a comma separated list of identifiers to lookup in the "Comma Separated Search Terms" field, or copy and paste several rows across a single column into the "Column Separated Search Terms" field
-4. Press Search
-5. (Optional) Uncheck "Merge Duplicates" if you would like for multiple rows sharing the same keyword to appear separately 
-
-
-### Searching the database
-
-1. Proceed to  [http://localhost:3000/static/search](http://localhost:3000/static/search)
-2. Select a database from the dropdown, you may need to reload the page after a minute or two if your dataset is particularly large
-3. Select a category/header you'd like to search through
-4. Type in your search terms, separate with a comma if there are multiple search terms in a single header
-5. All responses with any matching values will be returned
-6. Use the "Must posess (Case insensitive)" field for any terms that MUST appear in each row
-7. Use the "Must exclude (Case insensitive)" field for any terms that MUST NOT appear in each row
-8. Changing number of entries per page will require pressing the search button again to reload results. The default is set to 500 as things begin to slow down slightly if more results are loaded on a single page.
-
-### Deleting a database
-
-1. Proceed to  [http://localhost:3000/static/delete](http://localhost:3000/static/delete)
-2. Delete the database you want to remove
-3. You cannot reupload a database with the same name and keyword again without restarting the application
-4. If you are unable to delete the database through this page, please navigate to the public/uploads/keyword folder and manually delete the file before restarting the application.
+---
 
 
 
+# CSV-Database
+
+[CSV-Database `main`](https://github.com/saifsm1994/CSV-Database/tree/main)
+
+CSV-Database transforms CSV spreadsheets into live searchable online portals. Note: A CSV is a file format all major spreadsheet softwares can save individual spreadsheet tabs or pages as.
+
+-   [Why CSV-Database?](#why-CSV-Database)
+-   [Using CSV-Database](#using-CSV-Database)
+-   [Importing your CSV](#importing-your-CSV)
+-   [Available Pages](#pages)
+-   [Known issues](#known-issues)
+-   [Contributing](#contributing)
+-   [Packages Used](#packages-used)
+
+## Why CSV-Database?
+
+If you’ve ever tried to work with a enourmous spreadsheet with over a few thousand rows you are probably familiair with just how painful filtering searching through them for data can be - especially on older hardware.
+CSV-Database allows you to instantly turn that spreadsheet into a locally accessible website you can instantly search for the data you require - and one which can run on even the weakest of hardware.
+
+**Caveat**: CSV-Database only works with CSV files, Excel spreadsheets must be opened and each individual page must be exported or saved as a CSV file. All columns with data must also posess a header.
+
+**Security:**: CSV-Database is a local program that will run on your local machine. It should not touch the wider internet unless you expressly set port-forwarding on your local network or run it on a publically acessible VPS. If you do allow it access to your local network (optional), however, it will be accessible by other devices on your network - not granting this access will limit it solely to the device it will be running on.
+
+## Using CSV-Database
+
+First, make sure you have a copy of NodeJS installed. You can [download NodeJS here](https://nodejs.org/en/).
+
+* ### Windows
+    1. Download this repo as a ZIP file from the download code button above or [the releases section](https://github.com/saifsm1994/CSV-Database/releases). 
+    2. Unzip the whole thing and open terminal or powershell within the unzipped folder inside. This can be done by holding shift and right clicking before selecting 'Open PowerShell window here'.
+    3. run the following command to install all package dependencies
+
+      npm install
+
+    4. Once finished run the following command to start the server
+        
+      npm start
+
+    5. Open a browser and go to the URL http://127.0.0.1:3000/
+
+  Closing CSV-Database: To close the program, just go back to the terminal or powershell window running the program and close it or press "Control-C" a few times - this may take a few seconds.
+
+    <strong> Automatically starting CSV-Database</strong>
+
+    To automatically start CSV-Database with your machine you can create a .bat file and drop a shortcut to it in your startup folder. 
+
+    <strong> .bat creation: </strong>
+
+    1. Create a new text file in the folder named start.txt
+    2. Copy the path to the folder containing CSV-Database from file explorer
+    3. Open the file
+    4. Type in the following lines, replacing *path here* with the path you just copied
+
+      cd *path here*
+      npm start
+
+    5. You should now have a file that looks something like this:
+
+      cd C:/Users/UserName/Desktop/CSV-Database/
+      npm start
+
+    6. Choose 'Save As'
+    7. Change type to 'All Files' and change the .txt at the end of the file name to .bat
+    8. Save the file.
+    9. Success - you should now be able to run this program by doubleclicking start.bat
+    10. Drop a shortcut to this in your startup folder to automatically launch the program on logging in.
+
+* ### Mac OS X
+  The process for running this on MacOS should largely be the same as with Windows, except you will need to google how to open terminal from a specific folder for your particular version of OS X
+
+* ### Other platforms (e.g. Linux)
+    The process is very similar to the process for windows, except you have the option of running CSV-Database on other ports by sending the argument PORT=XXX from the command line.
+
+
+## Importing your CSV
+    1. Upon running CSV-Database you can proceed to the [uploads page](http://127.0.0.1:3000/Static/Upload) and select your chosen CSV file
+    2. The form will also ask you for a chosen 'Keyword' - the keyword should be a header from your CSV file that is ideally unique to each row. It will be the ID you use to instantly lookup specific rows from the CSV file.
+    3. If there is no such Keyword present in your file you can choose any header for a column without any symbols e.g. FirstName or add a new blank column with the header 'No Keyword' and use that as your keyword and things should work fine, except the Lookup page should be significantly less useful.
+    4. NOTE: In such a case please be sure to always unselect the 'Merge duplicates' option when searching or looking up values
+
+## Pages
+
+There are 4 main pages in CSV Database. These are
+    1. The Upload Page - This page allows you to upload new CSV files and select their respective keywords
+    2. The Delete Page - This page lists all loaded CSV databases and allow you to delete them
+    3. The Lookup Page - This page allows you to lookup rows based on the values listed in their Keyword Columns directly (e.g. if your keyword is First Name, it would let you search for all users with the name John instantly)
+    4. The Search Page - This page allows you to search through any column of your CSV file and return all exact or partial matches for a given search string. It also allows you to specify terms that MUST or MUST NOT appear in the returned rows (e.g. all rows with a name beginning with Jo in the First Name column, but only if their last name is not Smith)
+
+## Known issues
+
+I am actively working on this project, please feel free to post any bugs or feature requests [to the issues tab above](https://github.com/saifsm1994/CSV-Database/issues). Other issues you may run into include: 
+
+* <a name='Eaddir'>**"EADDRINUSE"** </a>:
+  If the application crashes with this error it indicates that another version of CSV-Database or some other application is currently running and using PORT 3000. Please either close that instance first or edit your app.js file and replace all instances of 3000 with some other port (e.g. 3020) - CSV-Database will then be accessible on http://127.0.0.1: + the chosen port
+
+ * <a name='SearchTime'>My searches are taking a long time to run</a>
+    The search page allows for multiple queries to be joined together, but each query is asked in sucession - resulting in a linear increase in time. E.g. Searching for John,James in a column with the keyword First Name results in two queries the first searching for all users named John and the second for all users named James before returning both. For extremely large 200k row  files this can mean a search with 10 or more queries may take 5-60 seconds depending on your machine's horsepower.
+
+* <a name='slowDB'>My database takes a few minutes to appear in the search and upload pages after I start the server</a>
+    CSV Databases will not load until they have been fully loaded and are searchable. This can take a few minutes depending on the power of your computer. An old laptop should be able to load most CSV files in less than a second per thousand rows, but a Raspberry Pi Zero may need 2-3 seconds per 1000 rows.
 
 ## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
-Please make sure to update tests as appropriate.
+I greatly welcome any help or advice regarding thi project. Please feel free to reach out directly or through the issues tab with any suggestions, advice or feedback.
 
-Readme written using https://www.makeareadme.com/
+## Packages Used
 
-Packages used include
 * body-parser
 * exceljs
 * express
