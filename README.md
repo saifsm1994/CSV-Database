@@ -132,10 +132,10 @@ I am actively working on this project, please feel free to post any bugs or feat
 * <a name='Eaddir'>**"EADDRINUSE"** </a>:
   If the application crashes with this error it indicates that another version of CSV-Database or some other application is currently running and using PORT 3000. Please either close that instance first or edit your app.js file and replace all instances of 3000 with some other port (e.g. 3020) - CSV-Database will then be accessible on http://127.0.0.1: + the chosen port
 
- * <a name='SearchTime'>My searches are taking a long time to run</a>
+ * <a name='SearchTime'>**"My searches are taking a long time to run"**</a>:
     The search page allows for multiple queries to be joined together, but each query is asked in sucession - resulting in a linear increase in time. E.g. Searching for John,James in a column with the keyword First Name results in two queries the first searching for all users named John and the second for all users named James before returning both. For extremely large 200k row  files this can mean a search with 10 or more queries may take 5-60 seconds depending on your machine's horsepower.
 
-* <a name='slowDB'>My database takes a few minutes to appear in the search and upload pages after I start the server</a>
+* <a name='slowDB'>**"MMy database takes a few minutes to appear in the search and upload pages after I start the server"**</a>:
     CSV Databases will not load until they have been fully loaded and are searchable. This can take a few minutes depending on the power of your computer. An old laptop should be able to load most CSV files in less than a second per thousand rows, but a Raspberry Pi Zero may need 2-3 seconds per 1000 rows.
 
 ## Contributing
