@@ -203,6 +203,34 @@
 
   <script>
 
+    let searchInput1 = document.getElementById("searchInput1");
+    let searchInput2 = document.getElementById("searchInput2");
+    let searchInput3 = document.getElementById("searchInput3");
+    let searchInput4 = document.getElementById("searchInput4");
+    let searchInput5 = document.getElementById("searchInput5");
+    searchInput1.addEventListener("keyup", function (event) {
+      // Number 13 is the "Enter" key on the keyboard
+      if (event.keyCode === 13) { getSearch(1) }
+    });
+    searchInput2.addEventListener("keyup", function (event) {
+      // Number 13 is the "Enter" key on the keyboard
+      if (event.keyCode === 13) { getSearch(1) }
+    });
+    searchInput3.addEventListener("keyup", function (event) {
+      // Number 13 is the "Enter" key on the keyboard
+      if (event.keyCode === 13) { getSearch(1) }
+    });
+    searchInput4.addEventListener("keyup", function (event) {
+      // Number 13 is the "Enter" key on the keyboard
+      if (event.keyCode === 13) { getSearch(1) }
+    });
+    searchInput5.addEventListener("keyup", function (event) {
+      // Number 13 is the "Enter" key on the keyboard
+      if (event.keyCode === 13) { getSearch(1) }
+    });
+
+
+
     function adjustTableSize(command) {
       let height = document.querySelector('#grid').style.minHeight
       console.log("command" + command + "command")
