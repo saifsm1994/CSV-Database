@@ -11,32 +11,60 @@
     dataObject = {};
 
 
-  function startup(){
+    function startup(){
 
     return new Promise(function(resolve, reject) {
     pullFolderAndFileList.pullFolderAndFileList().then(
         
-        function(response) {
+        async function(response) {
             folderPath = response;
 
 
-            //for each file in folderpath call database parser
-            folderPath.forEach(element => {
+            // //for each file in folderpath call database parser
+            // folderPath.forEach(element => {
+            //     console.log("Startup: Found directories - index term " ,element[2])
+            //     let directoryRoute = element[0];
+            //     let fileRoute = element[1];
+            //     let directoryNameForURL = element[2];
+            //     let keyword = element[3];
+            //     // console.log("startup - fileRoute",fileRoute,"\n","startup- keyword",keyword)
+
+            //     //second promise function, takes our list of directories and keywords and parses them into DataObject
+            //     parseDB.parseDB(fileRoute,keyword,directoryNameForURL).then(
+            //         function(response2){
+            //             //IF unable to parse file return error for given file keyword
+            //             if(response2["error"] == true){
+            //                 console.log("db " + directoryNameForURL + " is not valid, please fix the csv and reupload")
+            //                 directoryNameForURL = directoryNameForURL
+            //                 dataObject[directoryNameForURL] = response2;
+            //                 dataObject[directoryNameForURL]["message"] = "db " + directoryNameForURL + " is not valid, please fix the csv and reupload";
+            //                 resolve(dataObject)
+            //             }else{
+            //             //assign returned data set to dataObject
+            //             dataObject[directoryNameForURL] = response2;
+            //             resolve(dataObject)
+            //             }
+            //         }
+            //     )
+            // });
+
+            for (const element of folderPath) {
                 console.log("Startup: Found directories - index term " ,element[2])
                 let directoryRoute = element[0];
                 let fileRoute = element[1];
                 let directoryNameForURL = element[2];
                 let keyword = element[3];
-                // console.log("startup - fileRoute",fileRoute,"\n","startup- keyword",keyword)
 
-                //second promise function, takes our list of directories and keywords and parses them into DataObject
-                parseDB.parseDB(fileRoute,keyword,directoryNameForURL).then(
+
+                const contents = await  parseDB.parseDB(fileRoute,keyword,directoryNameForURL).then(
                     function(response2){
+                        //IF unable to parse file return error for given file keyword
                         if(response2["error"] == true){
                             console.log("db " + directoryNameForURL + " is not valid, please fix the csv and reupload")
                             directoryNameForURL = directoryNameForURL
                             dataObject[directoryNameForURL] = response2;
                             dataObject[directoryNameForURL]["message"] = "db " + directoryNameForURL + " is not valid, please fix the csv and reupload";
+                            resolve(dataObject)
                         }else{
                         //assign returned data set to dataObject
                         dataObject[directoryNameForURL] = response2;
@@ -44,7 +72,10 @@
                         }
                     }
                 )
-            });
+              }
+
+
+
 
         }, function(error) {
         console.error("Failed!", error);

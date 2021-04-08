@@ -86,6 +86,9 @@ function parseDB(fileLocation, keyword, directoryNameForURL) {
                     if (entries == 1) {
                         console.log("parseDB - running on", fileLocation, " + ", indexWord );
                     }
+                    if (entries % 10000 === 0) {
+                        console.log("Parsing in progress -  on ", fileLocation, " + ", indexWord, " count == ",entries );
+                    }
                 })
                 .on("end", function () {
                     console.log("parseDB - entries parsed for", fileLocation, " + ", indexWord, "is", entries);
