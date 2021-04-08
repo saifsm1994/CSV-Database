@@ -21,5 +21,11 @@
     "path": "^0.12.7",
     "querystring": "^0.2.0",
     "w2ui": "^1.4.3"
-  }
+  },
+  "pkg": {    
+    "assets": [
+        "views/*",
+        "public/**/*"    
+     ]
+ }
 }
