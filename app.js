@@ -60,7 +60,9 @@ app
                     console.log("failed to delete local file: " + err);
                     res.send("failed to delete local file: " + err);
                 } else {
-                    refreshDO(1)
+                    delete dataObject[reqDatabase];
+                    
+                    app.set('dataObject', dataObject);
                     res.send('successfully deleted local file ' + file);
                 }
             });
