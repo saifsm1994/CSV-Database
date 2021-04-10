@@ -69,11 +69,13 @@
   <script>
 
   function deleteMe(){
+    if(confirm("Do you really want to do this?")) {
     chosenDB = document.getElementById("listOfDatabases")
-    alert(chosenDB.value)
+    // alert(chosenDB.value)
     let attemptedDelete = httpGet("/delete/"+chosenDB.value );
     if(alert(attemptedDelete)){window.location.reload()}
   }
+}
   
   let basicInfo = sendData(httpGet("/getAllParams"));
 
