@@ -57,12 +57,13 @@
         <div class="row">
           <div class="col-sm-12 col-xs-12 card" style="background-color: whitesmoke; padding-bottom: 12px ">
             <div class="form-group">
-              <label for="exampleFormControlSelect1">Database select</label>
-              <select class="form-control" id="databaseSelect" onclick="saveChoice()">
+              <h3><label for="databaseSelect">Database select</label>
+                <i class="fa fa-info-circle" style="color: Orange;" title="Please choose an available database - choices are retained in a local cookie"></i>
+                <select class="form-control" id="databaseSelect" onclick="saveChoice()">
               </select>
             </div>
             <h3>Comma Seperated Search Terms
-              <i class="fa fa-info-circle" style="color: black;" title="1. Use 'all' for all entries in a database - warning this can be slow for extremely large databases 
+              <i class="fa fa-info-circle" style="color: Orange;" title="1. Use 'all' for all entries in a database - warning this can be slow for extremely large databases 
                 2. Entries without a keyword value will be assigned the value 'No Key Found' "></i>
             </h3>
 
