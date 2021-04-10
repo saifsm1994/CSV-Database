@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon app.js"
-    },
+  },
   "author": "SSM",
   "license": "0BSD",
   "dependencies": {
@@ -18,14 +18,16 @@
     "fs": "0.0.1-security",
     "ip": "^1.1.5",
     "nodemon": "^2.0.6",
+    "open": "^8.0.5",
     "path": "^0.12.7",
     "querystring": "^0.2.0",
     "w2ui": "^1.4.3"
   },
-  "pkg": {    
+  "pkg": {
     "assets": [
-        "views/*",
-        "public/**/*"    
-     ]
- }
+      "views/*",
+      "public/**/*",
+      "public/uploads/**/*"
+    ]
+  }
 }
