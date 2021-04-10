@@ -146,12 +146,7 @@ app.use('/', express.static('public/staticSite', {
     extensions: ['html', 'htm'],
 }));
 
-// .get('/', (req, res) => {
-//     // res.send(dataObject)
-//     res.status(400).send({
-//         "Error Message": "Database not selected - try localhost:"+port+"/getDatabaseNames"
-//     });
-// });
+
 
 app // accepts new files for the db
     .post('/upload', bodyParser.json(), function (req, res) {
@@ -163,6 +158,11 @@ app // accepts new files for the db
         form.parse(req, function (err, fields, files) {
             let chosenKeyword = fields.requestedIndexWord;
             let dir = __dirname + "/public/uploads/" + chosenKeyword;
+            let oldpath = files.filetoupload.path;
+            let newpath = dir + "/" + files.filetoupload.name;
+            let name = files.filetoupload.name;
+            let backURL = req.header('Referer') || '/';
+
 
             if (!fs.existsSync(dir)) { //if directory doesn't exist make it
                 fs.mkdir(dir, { recursive: true }, (err) => {
@@ -171,61 +171,60 @@ app // accepts new files for the db
                         res.write(err);
                         res.end();
                     } else {
-                        var oldpath = files.filetoupload.path;
-                        var newpath = dir + "/" + files.filetoupload.name;
                         try {
-                            fs.rename(oldpath, newpath, function (err) {
-                                if (err) {
-                                    res.send('File upload failed ' + err)
-                                }
-                                else {
-
-                                    let backURL = req.header('Referer') || '/';
-
-                                    let returnJson = {}
-                                    returnJson["Response"] = 'File uploaded and moved! Beginning Parse  -- ';
-                                    returnJson["Requested Keyword"] = chosenKeyword;
-                                    returnJson["Provided File"] = files.filetoupload.name;
-                                    returnJson["Return Link"] = backURL;
-
-                                    res.json(returnJson)
-                                    refreshDO(1)
-
-                                }
-
-                            });
+                            uploadFile(oldpath,newpath,chosenKeyword,name,backURL,1)
                         } catch (err) {
                             res.send(err)
                         }
-
                     }
                 });
             } else {
-                var oldpath = files.filetoupload.path;
-                var newpath = dir + "/" + files.filetoupload.name;
-
-                fs.rename(oldpath, newpath, function (err) {
-                    if (err) {
-                        res.send('File upload failed - you just deleted that file! Rename the file or Restart the app to upload it again <br>' + err)
-                    } else {
-
-                        let backURL = req.header('Referer') || '/';
-
-                        let returnJson = {}
-                        returnJson["Response"] = 'File uploaded and moved! Beginning Parse  -- ';
-                        returnJson["Requested Keyword"] = chosenKeyword;
-                        returnJson["Provided File"] = files.filetoupload.name;
-                        returnJson["Return Link"] = backURL;
-
-                        res.json(returnJson)
-                        refreshDO(1)
-
-
-                    }
-                });
-
+                uploadFile(oldpath,newpath,chosenKeyword,name,backURL,1)
             }
         })
+
+        function uploadFile(oldpath,newpath,chosenKeyword,name,backURL,index){
+            //if file exists - delete
+            if (fs.existsSync(newpath)){
+                fs.unlinkSync(newpath);
+                 console.log("\nFile ",newpath," is deleted")
+            }
+
+
+            //upload new file
+            fs.rename(oldpath, newpath, function (err) {
+                if(index == 1){res.setHeader('Content-type','text/html')}
+                if (err) {
+                    res.write('<h1>File upload failed - permissions error - deleted old file and renaming file to'+ name.replace(".csv","_1.csv")  + '"</h1>')
+                    if(index < 4){
+                    index++;
+                    if(index > 2){
+                        res.write('   Rename attempt failed - attempting again, attempt ', index)
+                    }
+                    newpath = newpath.replace(".csv","_1.csv");
+                    name = name.replace(".csv","_1.csv");
+                    uploadFile(oldpath,newpath,chosenKeyword,name,backURL,index)
+                    }else{
+                    res.write('   Upload attempts failed due to  ', err)
+                    }
+                } else {
+
+                    
+                    let returnJson = {}
+                    returnJson["Response"] = 'File uploaded and moved! Beginning Parse  -- ';
+                    returnJson["Requested Keyword"] = chosenKeyword;
+                    returnJson["Provided File"] = name;
+                    returnJson["Return Link"] = backURL;
+
+                    res.write("<h3>File uploaded and moved! Beginning Parse  -- </h3>")
+                    res.write('<h3>Chosen Keyword: '+chosenKeyword+'</h3>');
+                    res.write('<h3>Provided File: ' + name + '</h3>');
+                    res.write('<h3>Return Link: <a href="'+ backURL+'">Return to previous page</a></h3>');
+
+                    refreshDO(1)
+                }
+            });
+        }
 
 
     })
