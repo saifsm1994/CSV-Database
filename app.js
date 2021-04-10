@@ -4,6 +4,7 @@ const paginationFunction = require('./routes/functions/paginationFunction');
 const fs = require('fs')
 const bodyParser = require('body-parser')
 var formidable = require('formidable');
+const open = require('open')
 
 let dataObject = {};
 
@@ -213,9 +214,10 @@ function refreshDO(time) {
         app.set('dataObject', dataObject);
         startup.startup().then(
             function (responseStartup) {
-                dataObject = responseStartup
+                dataObject = responseStartup;
                 app.set('dataObject', dataObject);
-
+                console.log("Finished Parsing your databases, launching website. Parsed databases include:  ", Object.keys(responseStartup))
+                open('http://localhost:'+port);
             });
     }, time);
 }
