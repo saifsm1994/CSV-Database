@@ -185,22 +185,19 @@ app // accepts new files for the db
 
         function uploadFile(oldpath,newpath,chosenKeyword,name,backURL,index){
             //if file exists - delete
-            if (fs.existsSync(newpath)){
-                fs.unlinkSync(newpath);
-                 console.log("\nFile ",newpath," is deleted")
-            }
+            // if (fs.existsSync(newpath)){
+            //     fs.unlinkSync(newpath);
+            //      console.log("\nFile ",newpath," is deleted")
+            // }
 
 
             //upload new file
             fs.rename(oldpath, newpath, function (err) {
                 if(index == 1){res.setHeader('Content-type','text/html')}
                 if (err) {
-                    res.write('<h1>File upload failed - permissions error - deleted old file and renaming file to'+ name.replace(".csv","_1.csv")  + '"</h1>')
-                    if(index < 4){
+                    res.write('<h1>File/Keyword pair already exist. Renaming file to'+ name.replace(".csv","_1.csv")  + '"</h1>')
+                    if(index < 8){
                     index++;
-                    if(index > 2){
-                        res.write('   Rename attempt failed - attempting again, attempt ', index)
-                    }
                     newpath = newpath.replace(".csv","_1.csv");
                     name = name.replace(".csv","_1.csv");
                     uploadFile(oldpath,newpath,chosenKeyword,name,backURL,index)
