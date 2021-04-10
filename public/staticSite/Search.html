@@ -14,6 +14,8 @@
   <link rel="stylesheet" type="text/css" href="http://w2ui.com/src/w2ui-1.5.min.css" />
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
   <script type="text/javascript" src="http://w2ui.com/src/w2ui-1.5.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 </head>
 
 <body id="body">
@@ -124,11 +126,14 @@
             <div class="row" style="margin-top: 10px;">
               <div class="col-sm-6 col-xs-12 ">
                 <label for="mustHave">Must posess (Case insensitive)</label>
+                <i class="fa fa-info-circle" style="color: Orange;" title="Given phrase must appear somewhere in every returned row - rows not featuring given phrases are filtered out"></i>
                 <input class="form-control form-control-md" type="text"
                   placeholder="Must Posess Phrase 1, Must Posess Phrase 2..." id="mustInclude">
+
               </div>
               <div class="col-sm-6 col-xs-12 ">
                 <label for="mustExclude">Must exclude (Case insensitive)</label>
+                <i class="fa fa-info-circle" style="color: Orange;" title="Given phrase must NOT appear somewhere in every returned row - rows featuring given phrases are filtered out"></i>
                 <input class="form-control form-control-md" type="text"
                   placeholder="Must Exclude Phrase 1, Must Exclude Phrase 2..." id="mustExclude">
               </div>
@@ -142,10 +147,12 @@
                 <div class="col-md-3 col-sm-3 col-xs-3">
                   <input type="checkbox" class="form-check-input" id="mergeDuplicatesCheckbox" checked>
                   <label class="form-check-label" for="mergeDuplicatesCheckbox">Merge Duplicates</label>
+                  <i class="fa fa-info-circle" style="color: Orange;" title="If entries share the same keyword, identical values will be merged, unique values will be appended with line breaks"></i>
                 </div>
                 <div class="col-md-3 col-sm-3 col-xs-3">
                   <input type="checkbox" class="form-check-input" id="searchTypeCheckbox" checked>
                   <label class="form-check-label" for="searchTypeCheckbox">Exact Search</label>
+                  <i class="fa fa-info-circle" style="color: Orange;" title="Values in search term box must exactly match column values, uncheck to allow partial matches where column values are included in the search term or vice versa (e.g. Mac is a partial match for Macintosh"></i>
                 </div>
                 <div class="col-md-3 col-sm-3 col-xs-3">
                   <input type="checkbox" class="form-check-input" id="caseSensitive" checked>
