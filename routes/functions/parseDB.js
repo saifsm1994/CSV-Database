@@ -92,7 +92,7 @@ function parseDB(fileLocation, keyword, directoryNameForURL) {
                 })
                 .on("end", function () {
                     console.log("parseDB - entries parsed for", fileLocation, " + ", indexWord, "is", entries);
-                    if(noKeyCount > 0){console.log("no key found for "  + noKeyCount + " rows, please ensure all rows have a value in the chosen identifier/index term field")}
+                    if(noKeyCount > 0){console.log("minor error for ",fileLocation," - no key found for "  + noKeyCount + " rows, please ensure all rows have a value in the chosen identifier/index term field")}
                     returnObj = objOfData;
                     resolve(returnObj)
                 });
