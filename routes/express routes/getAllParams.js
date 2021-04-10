@@ -27,6 +27,14 @@ router.get('/', function (req, res) {
             let databaseHeaders = dataObject[element]["headers"];
             let databaseKeyword = element.split("-")[0]
             let databaseFile = element.split("-")[1]
+            
+            if(element.split("-").length > 2){ // catch in case file name includes dashes
+                element.split("-").forEach((element,index) => {
+                    if(index > 1){
+                        databaseFile = databaseFile+"-"+element
+                    }
+                });
+            }
             let error = false;
 
             if(database["error"] == true){
@@ -56,6 +64,7 @@ router.get('/', function (req, res) {
             try{
             var res = fs.openSync(filename, 'r')} catch(err){
                 console.log("failed " + file + err)
+                console.log("failed, more info: fileroute tried = " + filename )
                 return false
                 }
             
