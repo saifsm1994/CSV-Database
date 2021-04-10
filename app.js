@@ -49,8 +49,8 @@ app.use(function (req, res, next) {
 refreshDO(100)
 
 //Delete databases, no security - not necessary while this is a local app. 
-app    
-.get('/delete/:database/', (req, res) => {
+app
+    .get('/delete/:database/', (req, res) => {
         const reqDatabase = req.param("database");
         let folder = reqDatabase.split("-")[0]
         let file = reqDatabase.split("-")[1]
@@ -62,7 +62,7 @@ app
                     res.send("failed to delete local file: " + err);
                 } else {
                     delete dataObject[reqDatabase];
-                    
+
                     app.set('dataObject', dataObject);
                     res.send('successfully deleted local file ' + file);
                 }
@@ -87,23 +87,23 @@ app.get('/:database/:indexID/', (req, res) => {
     if (chosenDatabase && chosenDatabase["headers"]) {
         returnObj.push(chosenDatabase["headers"])
     }
-    if(indexID[0] == "all"){
+    if (indexID[0] == "all") {
         let keys = Object.keys(chosenDatabase)
-        keys.forEach((element,index) => {
-            if(index < 50000){
-            returnObj.push(chosenDatabase[element])
+        keys.forEach((element, index) => {
+            if (index < 50000) {
+                returnObj.push(chosenDatabase[element])
             }
         });
-    }else{
-    indexID.forEach(element => {
-        if (chosenDatabase) {
-            if (chosenDatabase[element]) {
-                returnObj.push(chosenDatabase[element])
-            } else {
-                returnObj.push(makeBlank(element, chosenDatabase["headers"]))
+    } else {
+        indexID.forEach(element => {
+            if (chosenDatabase) {
+                if (chosenDatabase[element]) {
+                    returnObj.push(chosenDatabase[element])
+                } else {
+                    returnObj.push(makeBlank(element, chosenDatabase["headers"]))
+                }
             }
-        }
-    });
+        });
     }
 
     res.send(returnObj)
@@ -127,7 +127,7 @@ app.get('/:database', (req, res) => {
     //if database exists
     if (Object.keys(dataObject).includes(reqDatabase)) {
         let availableKeys = Object.keys(dataObject[reqDatabase])
-        res.send("Available keys in this database include:"  +  availableKeys)
+        res.send("Available keys in this database include:" + availableKeys)
     } else {
         //send list of databases
         if (reqDatabase == "getDatabaseNames") {
@@ -175,9 +175,24 @@ app // accepts new files for the db
                         var newpath = dir + "/" + files.filetoupload.name;
                         try {
                             fs.rename(oldpath, newpath, function (err) {
-                                res.write('File uploaded and moved!');
-                                res.end();
-                                refreshDO(1)
+                                if (err) {
+                                    res.send('File upload failed ' + err)
+                                }
+                                else {
+
+                                    let backURL = req.header('Referer') || '/';
+
+                                    let returnJson = {}
+                                    returnJson["Response"] = 'File uploaded and moved! Beginning Parse  -- ';
+                                    returnJson["Requested Keyword"] = chosenKeyword;
+                                    returnJson["Provided File"] = files.filetoupload.name;
+                                    returnJson["Return Link"] = backURL;
+
+                                    res.json(returnJson)
+                                    refreshDO(1)
+
+                                }
+
                             });
                         } catch (err) {
                             res.send(err)
@@ -192,11 +207,20 @@ app // accepts new files for the db
                 fs.rename(oldpath, newpath, function (err) {
                     if (err) {
                         res.send('File upload failed - you just deleted that file! Rename the file or Restart the app to upload it again <br>' + err)
-
                     } else {
-                        res.write('File uploaded and moved!');
-                        res.end();
+
+                        let backURL = req.header('Referer') || '/';
+
+                        let returnJson = {}
+                        returnJson["Response"] = 'File uploaded and moved! Beginning Parse  -- ';
+                        returnJson["Requested Keyword"] = chosenKeyword;
+                        returnJson["Provided File"] = files.filetoupload.name;
+                        returnJson["Return Link"] = backURL;
+
+                        res.json(returnJson)
                         refreshDO(1)
+
+
                     }
                 });
 
@@ -209,15 +233,19 @@ app // accepts new files for the db
 
 //function that updates the dataObject containing all db info.
 function refreshDO(time) {
+    let firstLaunch = false;
     setTimeout(() => {
         dataObject = {};
         app.set('dataObject', dataObject);
-        startup.startup().then(
+        if (time === 100) { firstLaunch = true }
+        startup.startup(firstLaunch).then(
             function (responseStartup) {
                 dataObject = responseStartup;
                 app.set('dataObject', dataObject);
-                console.log("Finished Parsing your databases, launching website. Parsed databases include:  ", Object.keys(responseStartup))
-                open('http://localhost:'+port);
+                if (time === 100) {
+                    console.log("Finished Parsing your databases, launching website. Parsed databases include:  ", Object.keys(responseStartup))
+                    open('http://localhost:' + port);
+                }
             });
     }, time);
 }
